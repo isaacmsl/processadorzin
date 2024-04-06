@@ -4,5 +4,6 @@
 
 using mybyte = sc_bv<8>;
 using myword = sc_bv<32>;
+using tp = std::tuple<bool, bool>;
 
 #endif
