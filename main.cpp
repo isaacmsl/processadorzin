@@ -1,11 +1,11 @@
 #include "systemc.h"
-#include "tests/old_tests.h"
-#include "tests/ula_testbench.h"
+//#include "tests/ula_testbench.h"
+//#include "tests/test1_tests.h"
+#include "tests/test2_tests.h"
 
 int sc_main(int argc, char* argv[]) {
-   
-   	test_ula();
-	//test_old();
+
+	test_2();
 
 	return 0;
 }

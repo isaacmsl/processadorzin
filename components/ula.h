@@ -17,7 +17,7 @@
 //8   1000			Shift Left
 //9   1001			Negate
 
-SC_MODULE (my_ula) {
+SC_MODULE (myula) {
   
   sc_in<short>   alu_in1;  
   sc_in<short>   alu_in2;  
@@ -132,7 +132,7 @@ SC_MODULE (my_ula) {
     
   }
     
-  SC_CTOR(my_ula) {
+  SC_CTOR(myula) {
         SC_METHOD(alu);
         //sensitive << reset;
         sensitive << clock.pos();

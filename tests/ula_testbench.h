@@ -17,7 +17,7 @@ void test_ula() {
   sc_signal<bool>   of_out;
     
   int i=0;
-  my_ula alu("ALU");
+  myula alu("ALU");
   alu.alu_in1(alu_in1);
   alu.alu_in2(alu_in2);  
   alu.alu_out(alu_out);

@@ -1,10 +1,10 @@
 #include "systemc.h"
 #include "../components/arithmetic/myadder.h"
 #include "../global.h"
-#include "testbench.h"
-#include "../mon.h"
+#include "test1_testbench.h"
+#include "monitors/mon.h"
 
-void test_old() {
+void test_1() {
     
 	sc_signal<myword> ASig, BSig, SSig;
 	sc_signal<bool> COSig;
@@ -28,6 +28,7 @@ void test_old() {
 	Somador.S(SSig);
 	Somador.CO(COSig);
 
+	/*
 	//========================= waveform
 	sc_trace_file *fp;
 	fp=sc_create_vcd_trace_file("wave");
@@ -38,8 +39,9 @@ void test_old() {
 	sc_trace(fp,Somador.CO,"CO");
 	sc_trace(fp,TestClk,"CLK");
 	//========================= 
+	*/
 
 	sc_start();
 
-	sc_close_vcd_trace_file(fp);
+	//sc_close_vcd_trace_file(fp);
 }
