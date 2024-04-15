@@ -10,11 +10,7 @@ SC_MODULE(mymemory) {
     void m() {
 
         // getting addr as int
-        int addr_as_int = 0;
-        myword myword_addr = addr.read();
-        for (int i{myword_addr.length() - 1};i >= 0;i --) {
-            addr_as_int += myword_addr.get_bit(i) << (i - myword_addr.length() - 1);
-        }
+        int addr_as_int = word_to_int(addr.read());
 
         // writting
         if (clk && write) {
