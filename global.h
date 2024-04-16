@@ -8,9 +8,10 @@ using tp = std::tuple<bool, bool>;
 
 int word_to_int(myword myword_addr) {
     int addr_as_int = 0;
-
-    for (int i{myword_addr.length() - 1};i >= 0;i --) {
-        addr_as_int += myword_addr.get_bit(i) << ((myword_addr.length() - 1) - i);
+    int base = 1;
+    for (int i = 0; i < myword_addr.length(); i++) {
+        addr_as_int += myword_addr.get_bit(i) * base;
+        base = base * 2;
     }
 
     return addr_as_int;
