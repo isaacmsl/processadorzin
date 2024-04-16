@@ -15,10 +15,10 @@ SC_MODULE(mymemory) {
         // writting
         if (clk && write) {
             ram_array[addr_as_int] = info.read();
-        } 
-
-        // getting information at addr_as_int
-        out.write(ram_array[addr_as_int]);
+        } else if (!clk) {
+            // getting information at addr_as_int
+            out.write(ram_array[addr_as_int]);
+        }
     }
 
     SC_CTOR(mymemory): clk("CLK") {

@@ -10,13 +10,12 @@ SC_MODULE(myregisterbank) {
     std::array<myword, 8> bank;
 
     void m() {
-
         if (clk) {
             bank[ word_to_int(addr_write.read()) ] = data.read();
+        } else if (!clk) {
+            out1.write(bank[ word_to_int(addr1.read()) ]);
+            out2.write(bank[ word_to_int(addr2.read()) ]);
         }
-
-        out1.write(bank[ word_to_int(addr1.read()) ]);
-        out2.write(bank[ word_to_int(addr2.read()) ]);
     }
 
     SC_CTOR(myregisterbank): clk("CLK") {
