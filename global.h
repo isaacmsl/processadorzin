@@ -13,7 +13,7 @@ int word_to_int(myword myword_addr) {
         addr_as_int += myword_addr.get_bit(i) << ((myword_addr.length() - 1) - i);
     }
 
-    return addr_as_int
+    return addr_as_int;
 }
 
 // 32 0's  00000000000000000000000000000000
