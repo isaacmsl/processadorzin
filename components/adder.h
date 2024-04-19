@@ -3,8 +3,6 @@
 
 #include <iomanip>
 
-using std::get;
-
 SC_MODULE(myadder) {
     sc_in<myword> A, B;
     sc_out<myword> S;

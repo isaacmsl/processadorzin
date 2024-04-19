@@ -1,5 +1,5 @@
 #include "systemc.h"
-#include "../../components/myadder.h"
+#include "../../components/adder.h"
 #include "../../global.h"
 #include "test_adder_testbench.h"
 #include "test_adder_monitor.h"

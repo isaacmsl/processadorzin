@@ -1,5 +1,6 @@
 #include "systemc.h"
 #include "tests/test_register/test_register.h"
+#include "components/signalextender.h"
 
 int sc_main(int argc, char* argv[]) {
 

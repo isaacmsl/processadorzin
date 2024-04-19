@@ -3,8 +3,10 @@
 #include "systemc.h"
 
 const int MYWORD_LENGTH = 4;
+const int MYLONGWORD_LENGTH = 8;
 
 using myword = sc_bv<MYWORD_LENGTH>;
+using mylongword = sc_bv<MYLONGWORD_LENGTH>;
 
 int word_to_int(myword myword_addr) {
     int addr_as_int = 0;
