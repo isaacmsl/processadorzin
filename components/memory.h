@@ -5,7 +5,7 @@ SC_MODULE(mymemory) {
     sc_in<bool> clk, write;
     sc_in<myword> addr, info;
     sc_out<myword> out;
-    std::array<myword, 2 << MYWORD_LENGTH> ram_array;
+    std::array<myword, 1 << MYWORD_LENGTH> ram_array;
 
     void m() {
 
