@@ -1,7 +1,7 @@
 #include "systemc.h"
 #include "../global.h"
 
-SC_MODULE(myregister) {
+SC_MODULE(mypc) {
     sc_in<bool> clk;
     sc_in<myword> d;
     sc_out<myword> q;
@@ -10,7 +10,7 @@ SC_MODULE(myregister) {
         q.write(d);
     }
 
-    SC_CTOR(myregister): clk("CLK") {
+    SC_CTOR(mypc): clk("CLK") {
         SC_METHOD(m);
 		sensitive << clk.pos();
     }
