@@ -1,5 +1,5 @@
 #include "systemc.h"
-#include "global.h"
+#include "../global.h"
 
 #include <iomanip>
 
