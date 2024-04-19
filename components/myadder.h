@@ -10,27 +10,21 @@ SC_MODULE(myadder) {
     sc_out<myword> S;
     sc_out<bool> CO;
 
-    tp add(bool a, bool b) {
-        return tp(a ^ b, a && b);
-    }
-
     void bitwise_sum() {
         myword sum; // value to be returned
         myword a = A.read();
         myword b = B.read();
         bool carry = 0;
 
-        int word_lenght = A.read().length();
-
         // bitwise sum
-        for (int i{0};i < word_lenght;i ++) {
+        for (int i{0};i < MYWORD_LENGTH;i ++) {
 
-            bool a_b = get<0>(add(a.get_bit(i), b.get_bit(i))); // getting the 'XOR' part of the sum
-            tp a_b_carry = add(a_b, carry); // adding carry to the result
+            bool xor_ = a.get_bit(i) ^ b.get_bit(i);
+            bool and_ = a.get_bit(i) & b.get_bit(i);
 
-            sum.set_bit(i, get<0>(a_b_carry));
+            sum.set_bit(i, xor_ ^ carry);
 
-            carry = get<1>(a_b_carry); //updating carry
+            carry = and_ | (xor_ & carry);
         }
 
         S.write(sum);

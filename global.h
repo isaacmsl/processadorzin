@@ -5,7 +5,6 @@
 const int MYWORD_LENGTH = 4;
 
 using myword = sc_bv<MYWORD_LENGTH>;
-using tp = std::tuple<bool, bool>;
 
 int word_to_int(myword myword_addr) {
     int addr_as_int = 0;

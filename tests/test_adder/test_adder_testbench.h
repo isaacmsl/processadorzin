@@ -7,12 +7,13 @@ SC_MODULE(testbench) {
 
     void m() {
 
+        A.write("0000");
+        B.write("0000");
+
         wait();
 
         A.write("0001");
         B.write("0001");
-
-        wait();
 
         wait();
 
@@ -26,6 +27,6 @@ SC_MODULE(testbench) {
 
     SC_CTOR(testbench) {
         SC_THREAD(m);
-        sensitive << clk.pos();
+        sensitive << clk;
     }
 };

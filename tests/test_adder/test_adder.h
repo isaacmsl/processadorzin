@@ -6,27 +6,27 @@
 
 void test_adder() {
     
-	sc_signal<myword> ASig, BSig, SSig;
-	sc_signal<bool> COSig;
-	sc_clock clock("clock", 10, 0.5, 0.1);
+	sc_signal<myword> A, B, S;
+	sc_signal<bool> CO;
+	sc_clock clock("clk", 1, SC_SEC, 0.5, 0, SC_SEC, false);
 
 	testbench<myword> Tb("Testbench");
-	Tb.A(ASig);
-	Tb.B(BSig);
+	Tb.A(A);
+	Tb.B(B);
 	Tb.clk(clock);
 
 	mon<myword> Monitor1("Monitor");
-	Monitor1.A(ASig);
-	Monitor1.B(BSig);
-	Monitor1.S(SSig);
-	Monitor1.CO(COSig);
+	Monitor1.A(A);
+	Monitor1.B(B);
+	Monitor1.S(S);
+	Monitor1.CO(CO);
 	Monitor1.clk(clock);
 
 	myadder Somador("adder1");
-	Somador.A(ASig);
-	Somador.B(BSig);
-	Somador.S(SSig);
-	Somador.CO(COSig);
+	Somador.A(A);
+	Somador.B(B);
+	Somador.S(S);
+	Somador.CO(CO);
 
-	sc_start();
+	sc_start(5, SC_SEC);
 }
