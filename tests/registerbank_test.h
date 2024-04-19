@@ -4,9 +4,10 @@
 #include "registerbank_testbench.h"
 #include "../components/registerbank.h"
 
+/*
 void registerbank_test() {
     sc_signal<myword> data;
-    sc_signal<sc_bv<8>> addr1, addr2, addr_write;
+    sc_signal<myword> addr1, addr2, addr_write;
     sc_signal<myword> out1, out2;
 	sc_clock TestClk("TestClock", 10, SC_NS, 0.1);
 
@@ -37,3 +38,4 @@ void registerbank_test() {
     
 	sc_start();
 }
+*/

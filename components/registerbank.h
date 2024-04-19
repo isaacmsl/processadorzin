@@ -5,9 +5,9 @@
 SC_MODULE(myregisterbank) {
     sc_in<bool> clk;
     sc_in<myword> data;
-    sc_in<sc_bv<8>> addr1, addr2, addr_write;
+    sc_in<myword> addr1, addr2, addr_write;
     sc_out<myword> out1, out2;
-    std::array<myword, 8> bank;
+    std::array<myword, 2 << MYWORD_LENGTH> bank;
 
     void m() {
         if (clk) {
@@ -20,6 +20,6 @@ SC_MODULE(myregisterbank) {
 
     SC_CTOR(myregisterbank): clk("CLK") {
         SC_METHOD(m);
-		sensitive_pos << clk;
+		sensitive << clk.pos();
     }
 };

@@ -4,7 +4,7 @@ template<typename T>
 SC_MODULE(testbench) {
     sc_in<bool> clk;
     sc_out<myword> data;
-    sc_out<sc_bv<8>> addr1, addr2, addr_write;
+    sc_out<myword> addr1, addr2, addr_write;
 
     void TbGen_word() {
 

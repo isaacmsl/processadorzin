@@ -1,5 +1,5 @@
 #include "systemc.h"
-#include "myadder_1bit.h"
+#include "global.h"
 
 #include <iomanip>
 
@@ -37,7 +37,7 @@ SC_MODULE(myadder) {
         CO.write(carry);
     }
 
-    SC_CTOR(myadder) : A("A"), B("B"), S("S"), CO("CO") {
+    SC_CTOR(myadder) : A("A"), B("B") {
         SC_METHOD(bitwise_sum);
 		sensitive << A << B;
     }

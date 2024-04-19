@@ -8,15 +8,14 @@ SC_MODULE(myregister) {
 
     void m() {
         if (clr) {
-            q.write("00000000000000000000000000000000");
-        } else if (clk && ld) {
+            q.write(0);
+        } else if (ld) {
             q.write(d);
         }
     }
 
-    SC_CTOR(myregister): clk("CLK"), clr("CLR") {
+    SC_CTOR(myregister): clk("CLK") {
         SC_METHOD(m);
-        sensitive << clr;
-		sensitive_pos << clk;
+		sensitive << clk.pos();
     }
 };
