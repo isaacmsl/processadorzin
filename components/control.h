@@ -2,7 +2,8 @@
 #include "../global.h"
 
 SC_MODULE(mycontrol) {
-    sc_in<myword> opcode, func, zero;
+    sc_in<bool> zero;
+    sc_in<myword> opcode, func;
     sc_out<bool> RegWrite, RegDst, ALUSrc, MemWrite, MemRead, MemToReg, PCSrc;
     sc_out<myword> ALUop;
 

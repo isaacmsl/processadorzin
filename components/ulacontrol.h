@@ -1,7 +1,7 @@
 #include "systemc.h"
 #include "../global.h"
 
-SC_MODULE(myalucontrol) {
+SC_MODULE(myulacontrol) {
     sc_in<myword> op, f;
     sc_out<myword> S;
 
@@ -9,7 +9,7 @@ SC_MODULE(myalucontrol) {
         S.write(op);
     }
 
-    SC_CTOR(myalucontrol) {
+    SC_CTOR(myulacontrol) {
         SC_METHOD(m);
 		sensitive << op << f;
     }

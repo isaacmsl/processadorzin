@@ -2,8 +2,8 @@
 #include "../global.h"
 
 SC_MODULE(mymemory) {
-    sc_in<bool> clk, write;
-    sc_in<myword> addr, info;
+    sc_in<bool> clk, write, read;
+    sc_in<myword> addr, data;
     sc_out<myword> out;
     std::array<myword, 1 << MYWORD_LENGTH> ram_array;
 
@@ -14,8 +14,8 @@ SC_MODULE(mymemory) {
 
         // writting
         if (write) {
-            ram_array[addr_as_int] = info.read();
-        } else {
+            ram_array[addr_as_int] = data.read();
+        } else if (read) {
             // reading
             out.write(ram_array[addr_as_int]);
         }
