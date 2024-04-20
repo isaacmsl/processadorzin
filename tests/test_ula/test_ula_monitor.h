@@ -5,7 +5,7 @@ using namespace std;
 
 template<typename T>
 SC_MODULE(mon) {
-    sc_in<bool> clk, CO;
+    sc_in<bool> clk, CO, zero;
     sc_in<T> A,B,S, sel;
 
     void monitor() {
@@ -14,6 +14,7 @@ SC_MODULE(mon) {
         cout << setw(MYWORD_LENGTH) << "B" << " ";
         cout << setw(MYWORD_LENGTH + 1) << "CO" << " ";
         cout << setw(MYWORD_LENGTH) << "S" << " ";
+        cout << setw(MYWORD_LENGTH + 3) << "zero" << " ";
         cout << setw(MYWORD_LENGTH + 2) << "sel" << " ";
         cout << setw(MYWORD_LENGTH + 2) << "clk" << endl;
 
@@ -23,6 +24,7 @@ SC_MODULE(mon) {
             cout << setw(MYWORD_LENGTH) << B.read() << " ";
             cout << setw(MYWORD_LENGTH + 1) << CO.read() << " ";
             cout << setw(MYWORD_LENGTH) << S.read() << " ";
+            cout << setw(MYWORD_LENGTH + 3) << zero.read() << " ";
             cout << setw(MYWORD_LENGTH + 2) << sel.read() << " ";
             cout << setw(MYWORD_LENGTH + 2) << clk.read() << " " << endl;
             wait();

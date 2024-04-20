@@ -7,7 +7,7 @@
 void test_ula() {
     
 	sc_signal<myword> A, B, S, sel;
-	sc_signal<bool> CO;
+	sc_signal<bool> CO, zero;
 	sc_clock clock("clk", 1, SC_SEC, 0.5, 0, SC_SEC, false);
 
 	testbench<myword> Tb("Testbench");
@@ -22,6 +22,7 @@ void test_ula() {
 	Monitor1.B(B);
 	Monitor1.S(S);
 	Monitor1.CO(CO);
+	Monitor1.zero(zero);
 	Monitor1.clk(clock);
 
 	myula Ula("ula");
@@ -30,6 +31,7 @@ void test_ula() {
 	Ula.alu_in2(B);
 	Ula.alu_out(S);
 	Ula.c_out(CO);
+	Ula.zero_out(zero);
 	Ula.clock(clock);
 
 	sc_start(5, SC_SEC);
