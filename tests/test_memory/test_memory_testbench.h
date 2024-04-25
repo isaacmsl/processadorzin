@@ -27,6 +27,10 @@ SC_MODULE(testbench) {
 
         wait();
 
+        // Wait for out updates
+
+        wait();
+
         sc_stop();
     }
 
