@@ -13,20 +13,21 @@ using myaddressword = sc_bv<MYADDRESSWORD_LENGTH>;
 using myopword = my6bitword;
 
 enum opcodes {
-    op_add, //0
-    op_sub,
-    op_mult,
-    op_div,
-    op_or,
-    op_and,
-    op_xor,
-    op_shiftright,
-    op_shiftleft,
-    op_negate,
-    op_slt,
-    op_lw,
-    op_sw,
-    op_beq //13
+    op_add, // add register1 with immediate (index 0)
+    op_sub, // sub register1 with immediate (index 1)
+    op_mult, // mult register1 with immediate (index 2)
+    op_div, // div register1 with immediate (index 3)
+    op_or, // 'or' register1 with immediate (index 4)
+    op_and, // 'and' register1 with immediate (index 5)
+    op_xor, // 'xor' register1 with immediate (index 6)
+    op_shiftright, // shiftright register1 by 'immediate' (index 7)
+    op_shiftleft, // shiftleft register1 by 'immediate' (index 8)
+    op_negate, // negate immediate (index 9)
+    op_ld, // load word in memory with address 'immediate + register1' to register2 (index 10)
+    op_st, // store register2 in memory in address 'immediate + register1' (index 11)
+    op_j, // jump 'immediate' instructions (index 12)
+    op_jn, // jump 'immediate' instructions if register1 - register2 < 0 (index 13)
+    op_jz, // jump 'immediate' instructions if register1 - register2 == 0 (index 14)
 };
 
 int word_to_int(myword myword_addr) {
@@ -34,6 +35,18 @@ int word_to_int(myword myword_addr) {
     int base = 1;
     for (int i = 0; i < myword_addr.length(); i++) {
         addr_as_int += myword_addr.get_bit(i) * base;
+        base = base * 2;
+    }
+
+    return addr_as_int;
+}
+
+template<typename T>
+int my_to_int(T my_addr) {
+    int addr_as_int = 0;
+    int base = 1;
+    for (int i = 0; i < my_addr.length(); i++) {
+        addr_as_int += my_addr.get_bit(i) * base;
         base = base * 2;
     }
 

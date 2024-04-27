@@ -20,13 +20,12 @@ SC_MODULE(myinstructionspliter) {
             if (i <= 15) {
                 D.set_bit(i, i_bit);
                 if (i <= 5) {E.set_bit(i, i_bit);}
-                if (i >= 11) {C.set_bit(i, i_bit);}
+                if (i >= 11) {C.set_bit(i - 11, i_bit);}
             }
             else {
-                if (i <= 20) {B.set_bit(i, i_bit);}
-                else if (i <= 25) {A.set_bit(i, i_bit);}
-                else {F.set_bit(i, i_bit);}
-                //std::cout << F  << " " << instruction_ << " " << i << '\n';
+                if (i <= 20) {B.set_bit(i - 16, i_bit);}
+                else if (i <= 25) {A.set_bit(i - 21, i_bit);}
+                else {F.set_bit(i - 26, i_bit);}
             }
 
         }

@@ -32,8 +32,8 @@ SC_MODULE (myula) {
   
   void alu () {
 
-    short alu_in1_int = word_to_int(alu_in1.read());
-    short alu_in2_int = word_to_int(alu_in2.read());
+    int alu_in1_int = word_to_int(alu_in1.read());
+    int alu_in2_int = word_to_int(alu_in2.read());
     short read_ = word_to_int(alu_sel.read());
 
     c_out.write(0);
@@ -42,13 +42,13 @@ SC_MODULE (myula) {
     if(read_ == op_add)//Suma
     {
         alu_out.write(alu_in1_int + alu_in2_int);
-        c_out.write((alu_in1_int + alu_in2_int) >= (1 << MYSHORTWORD_LENGTH));
+        c_out.write(0);
     }
 
     if(read_ == op_sub)//Resta
     {	
         alu_out.write(alu_in1_int - alu_in2_int);
-        zero_out.write(alu_in1_int - alu_in2_int == 0 ? 0 : 1);
+        zero_out.write((alu_in1_int - alu_in2_int) == 0 ? 0 : 1);
     }
 
     if(read_ == op_mult)//Multiplicacion
@@ -78,22 +78,17 @@ SC_MODULE (myula) {
 
     if(read_ == op_shiftright)//Shift Right
     {	
-        alu_out.write(alu_in1_int >> 1);           
+        alu_out.write(alu_in1_int >> alu_in2_int);
     }  
 
     if(read_ == op_shiftleft)//Shift Left
     {
-        alu_out.write(alu_in1_int << 1);            
+        alu_out.write(alu_in1_int << alu_in2_int);
     }
 
     if(read_ == op_negate)//Negate
     {	
-        alu_out.write(~alu_in1_int);  
-    }
-
-    if (read_ == op_slt)
-    {
-        // TODO
+        alu_out.write(~alu_in2_int);
     }
 
     /*
@@ -119,6 +114,6 @@ SC_MODULE (myula) {
     
   SC_CTOR(myula) {
         SC_METHOD(alu);
-        sensitive << clock.pos();
+        sensitive << clock.pos() << alu_in1 << alu_in2;
     } 
 };

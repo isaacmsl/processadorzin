@@ -1,6 +1,6 @@
 #include "systemc.h"
 #include "global.h"
-#include "reader.h"
+#include "loader.h"
 #include "components/adder.h"
 #include "components/bitshifter.h"
 #include "components/ulacontrol.h"
@@ -9,6 +9,7 @@
 #include "components/memory.h"
 #include "components/mux.h"
 #include "components/pc.h"
+#include "components/prePCSrc.h"
 #include "components/registerbank.h"
 #include "components/signalextender.h"
 #include "components/ula.h"
@@ -24,14 +25,14 @@ void processor() {
 
     sc_signal<bool> instructionMemory_read, MemRead, MemWrite, MemToReg, 
                     ula_zero, ula_carry,
-                    RegDst, ALUSrc, RegWrite, PCSrc, InstMemWrite;
+                    RegDst, ALUSrc, RegWrite, PCSrc, PCSrc_, InstMemWrite;
     
     sc_signal<myword> instructionMemory_out, dataMemory_out,
                         ula_out,
                         UlaMux_out, DataMemoryMux_out, pcMux_out,
                         data_read1, data_read2,
                         signExtend_out,
-                        Left2BitShifter_out,
+                        BitShifter_out,
                         adderRight_out, adderLeft_out,
                         pc_out,
                         InstMemData;
@@ -50,12 +51,13 @@ void processor() {
 
     mon<myword> Monitor("Monitor");
 	Monitor.clk(clock);
-    Monitor.myword_out1(instructionMemory_out);
-    Monitor.myword_out2(signExtend_out);
+    Monitor.myword_out1(data_read2);
+    Monitor.myword_out2(ula_out);
     Monitor.my6bit_out(instructionMemory_outF);
+    Monitor.myadd_out(instructionMemory_outB);
     Monitor.myshortword_out(instructionMemory_outD);
-    Monitor.myword_out3(ula_out);
-    Monitor.bit_out(ALUSrc);
+    Monitor.myword_out3(DataMemoryMux_out);
+    Monitor.bit_out(MemWrite);
     
     // --------------- processor ---------------
 
@@ -110,6 +112,8 @@ void processor() {
     Registers.out2(data_read2);
     Registers.clk(clock);
 
+    load_registers(Registers, "-");
+
     mysigextender signalExtend("signalExtend");
     signalExtend.A(instructionMemory_outD);
     signalExtend.S(signExtend_out);
@@ -142,10 +146,12 @@ void processor() {
     DataMemory.out(dataMemory_out);
     DataMemory.clk(clock);
 
+    load_memory(DataMemory, "-");
+
     mymux<myword> DataMemoryMux("DataMemoryMux");
     DataMemoryMux.sel(MemToReg);
-    DataMemoryMux.in1(dataMemory_out);
-    DataMemoryMux.in2(ula_out);
+    DataMemoryMux.in1(ula_out);
+    DataMemoryMux.in2(dataMemory_out);
     DataMemoryMux.S(DataMemoryMux_out);
 
     // north part
@@ -155,27 +161,33 @@ void processor() {
     pc.q(pc_out);
     pc.clk(clock);
 
-    sc_signal<myword> four;
-    four.write(myword(4));
+    sc_signal<myword> address_displacement;
+    address_displacement.write(myword(1));
 
     myadder adderLeft("adderLeft");
 	adderLeft.A(pc_out);
-	adderLeft.B(four);
+	adderLeft.B(address_displacement);
 	adderLeft.S(adderLeft_out);
     sc_signal<bool> left_co;adderLeft.CO(left_co);
 
-    myshifter<2, false> Left2BitShifter("Left2BitShifter");
-    Left2BitShifter.A(signExtend_out);
-    Left2BitShifter.S(Left2BitShifter_out);
+    myshifter<0, false> BitShifter("BitShifter");
+    BitShifter.A(signExtend_out);
+    BitShifter.S(BitShifter_out);
 
 	myadder adderRight("adderRight");
 	adderRight.A(adderLeft_out);
-	adderRight.B(Left2BitShifter_out);
+	adderRight.B(BitShifter_out);
 	adderRight.S(adderRight_out);
 	sc_signal<bool> right_co;adderRight.CO(right_co);
 
+    myprePCSrc prePCSrc("PCScrc");
+    prePCSrc.PCSrc(PCSrc);
+    prePCSrc.Ula_out(ula_out);
+    prePCSrc.opcode(instructionMemory_outF);
+    prePCSrc.PCSrc_(PCSrc_);
+
     mymux<myword> pcMux("pcMux");
-    pcMux.sel(PCSrc);
+    pcMux.sel(PCSrc_);
     pcMux.in1(adderLeft_out);
     pcMux.in2(adderRight_out);
     pcMux.S(pcMux_out);

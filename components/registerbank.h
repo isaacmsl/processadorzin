@@ -1,3 +1,6 @@
+#ifndef REGISTERBANK_H
+#define REGISTERBANK_H
+
 #include "systemc.h"
 #include "../global.h"
 #include "register.h"
@@ -12,16 +15,21 @@ SC_MODULE(myregisterbank) {
     std::array<myword, banksize> bank;
 
     void m() {
-        if (clk.read()) {
-            bank[ word_to_int(addr_write.read()) % banksize ] = data.read();
-        } else if (!(clk.read()) && write.read()) {
-            out1.write(bank[ word_to_int(addr1.read()) % banksize ]);
-            out2.write(bank[ word_to_int(addr2.read()) % banksize ]);
+        if (clk.read() && write.read()) {
+            bank[ my_to_int<myaddressword>(addr_write.read()) % banksize ] = data.read();
+
+        } else {
+            out1.write(bank[ my_to_int<myaddressword>(addr1.read()) % banksize ]);
+            out2.write(bank[ my_to_int<myaddressword>(addr2.read()) % banksize ]);
         }
+
+        //std::cout << bank[1] << '\n';
     }
 
     SC_CTOR(myregisterbank): clk("CLK") {
         SC_METHOD(m);
-		sensitive << clk.pos();
+		sensitive << clk.pos() << addr1 << addr2 << data << addr_write << write;
     }
 };
+
+#endif

@@ -22,24 +22,43 @@ SC_MODULE(mycontrol) {
         
         switch(opcode_int) {
 
-            case op_add: RegWrite.write(1);ALUSrc.write(1);break;
-            // RegDst.write(1);RegWrite.write(1);break;
+            case op_add: ALUSrc.write(1);break;
 
-            case op_sub: RegDst.write(1);RegWrite.write(1);break;
+            case op_sub: ALUSrc.write(1);break;
 
-            case op_and: RegDst.write(1);RegWrite.write(1);break;
+            case op_mult: ALUSrc.write(1);break;
 
-            case op_or: RegDst.write(1);RegWrite.write(1);break;
+            case op_div: ALUSrc.write(1);break;
 
-            case op_slt: RegDst.write(1);RegWrite.write(1);break;
+            case op_and: ALUSrc.write(1);break;
 
-            case op_lw: ALUop.write(op_add);RegWrite.write(1);ALUSrc.write(1);MemRead.write(1);MemToReg.write(1);break;
+            case op_or: ALUSrc.write(1);break;
 
-            case op_sw: ALUop.write(op_add);ALUSrc.write(1);MemWrite.write(1);break;
+            case op_xor: ALUSrc.write(1);break;
 
-            case op_beq: ALUop.write(op_sub);break;
+            case op_shiftleft: ALUSrc.write(1);break;
+
+            case op_shiftright: ALUSrc.write(1);break;
+
+            case op_negate: ALUSrc.write(1);break;
+
+            case op_ld: ALUop.write(op_add);ALUSrc.write(1);MemRead.write(1);RegWrite.write(1);MemToReg.write(1);break;
+
+            case op_st: ALUop.write(op_add);ALUSrc.write(1);MemWrite.write(1);break;
+
+            case op_j: PCSrc.write(1);break;
+
+            case op_jn: ALUop.write(op_sub);break;
+
+            case op_jz: ALUop.write(op_sub);break;
 
         }
+
+        // writting into registers
+
+        //case op_st: ALUop.write(op_add);RegWrite.write(1);ALUSrc.write(1);MemRead.write(1);break;
+
+        //std::cout << opcode_int << '\n';
 
     }
 
