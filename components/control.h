@@ -22,7 +22,8 @@ SC_MODULE(mycontrol) {
         
         switch(opcode_int) {
 
-            case op_add: RegDst.write(1);RegWrite.write(1);break;
+            case op_add: RegWrite.write(1);ALUSrc.write(1);break;
+            // RegDst.write(1);RegWrite.write(1);break;
 
             case op_sub: RegDst.write(1);RegWrite.write(1);break;
 

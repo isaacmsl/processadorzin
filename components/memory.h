@@ -1,3 +1,6 @@
+#ifndef MEMORY_H
+#define MEMORY_H
+
 #include "systemc.h"
 #include "../global.h"
 
@@ -26,3 +29,5 @@ SC_MODULE(mymemory) {
 		sensitive << clk;
     }
 };
+
+#endif

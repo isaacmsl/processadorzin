@@ -1,8 +1,6 @@
 #include "systemc.h"
 #include "../global.h"
 
-#include <iomanip>
-
 template<int N, bool Right>
 SC_MODULE(myshifter) {
     sc_in<myword> A;

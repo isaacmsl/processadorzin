@@ -1,9 +1,11 @@
 #include "systemc.h"
 #include "global.h"
+#include "reader.h"
 #include "components/adder.h"
 #include "components/bitshifter.h"
 #include "components/ulacontrol.h"
 #include "components/control.h"
+#include "components/instructionspliter.h"
 #include "components/memory.h"
 #include "components/mux.h"
 #include "components/pc.h"
@@ -11,6 +13,7 @@
 #include "components/signalextender.h"
 #include "components/ula.h"
 #include "processor_monitor.h"
+
 
 
 void processor() {
@@ -23,7 +26,7 @@ void processor() {
                     ula_zero, ula_carry,
                     RegDst, ALUSrc, RegWrite, PCSrc, InstMemWrite;
     
-    sc_signal<myword> instructionMemory_out, dataMemory_out, instructionMemory_addr,
+    sc_signal<myword> instructionMemory_out, dataMemory_out,
                         ula_out,
                         UlaMux_out, DataMemoryMux_out, pcMux_out,
                         data_read1, data_read2,
@@ -47,49 +50,37 @@ void processor() {
 
     mon<myword> Monitor("Monitor");
 	Monitor.clk(clock);
+    Monitor.myword_out1(instructionMemory_out);
+    Monitor.myword_out2(signExtend_out);
+    Monitor.my6bit_out(instructionMemory_outF);
+    Monitor.myshortword_out(instructionMemory_outD);
+    Monitor.myword_out3(ula_out);
+    Monitor.bit_out(ALUSrc);
     
     // --------------- processor ---------------
 
+    instructionMemory_read.write(1);
+
     mymemory InstructionMemory("InstructionMemory");
+
     InstructionMemory.read(instructionMemory_read);
     InstructionMemory.write(InstMemWrite);
     InstructionMemory.data(InstMemData);
-    InstructionMemory.addr(instructionMemory_addr);
+    InstructionMemory.addr(pc_out);
     InstructionMemory.out(instructionMemory_out);
     InstructionMemory.clk(clock);
 
+    load_instructions(InstructionMemory, "-");
+
     // splitting instructionMemory_out to A,B,C ...
-
-    myaddressword A, B, C;
-    myshortword D;
-    my6bitword E, F;
-    myword instruction = instructionMemory_out.read();
-
-    for (int i{0}; i < MYWORD_LENGTH;i ++) {
-
-        bool i_bit = instruction.get_bit(i);
-        
-        if (i <= 15) {
-            D.set_bit(i, i_bit);
-            if (i <= 5) {E.set_bit(i, i_bit);}
-            if (i >= 11) {C.set_bit(i, i_bit);}
-        }
-        else {
-            if (i <= 20) {B.set_bit(i, i_bit);}
-            else if (i <= 25) {A.set_bit(i, i_bit);}
-            else {F.set_bit(i, i_bit);}
-        }
-
-    }
-
-    instructionMemory_outA.write(A);
-    instructionMemory_outB.write(B);
-    instructionMemory_outC.write(C);
-    instructionMemory_outD.write(D);
-    instructionMemory_outE.write(E);
-    instructionMemory_outF.write(F);
-
-    // going back to the other components...
+    myinstructionspliter InstructionSpliter("InstructionSpliter");
+    InstructionSpliter.instruction(instructionMemory_out);
+    InstructionSpliter.instructionMemory_outA(instructionMemory_outA);
+    InstructionSpliter.instructionMemory_outB(instructionMemory_outB);
+    InstructionSpliter.instructionMemory_outC(instructionMemory_outC);
+    InstructionSpliter.instructionMemory_outD(instructionMemory_outD);
+    InstructionSpliter.instructionMemory_outE(instructionMemory_outE);
+    InstructionSpliter.instructionMemory_outF(instructionMemory_outF);
 
     mycontrol Control("Control");
 	Control.opcode(instructionMemory_outF);
@@ -188,6 +179,6 @@ void processor() {
     pcMux.in1(adderLeft_out);
     pcMux.in2(adderRight_out);
     pcMux.S(pcMux_out);
-    
+
 	sc_start(15, SC_SEC);
 }

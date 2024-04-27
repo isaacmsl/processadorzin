@@ -8,7 +8,7 @@ SC_MODULE(mymux) {
     sc_out<T> S;
 
     void m() {
-        S.write(sel ? in1 : in2);
+        S.write(sel.read() ? in2 : in1);
     }
 
     SC_CTOR(mymux) {
