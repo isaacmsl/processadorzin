@@ -3,8 +3,8 @@
 
 SC_MODULE(mypc) {
     sc_in<bool> clk;
-    sc_in<mipsword> d;
-    sc_out<mipsword> q;
+    sc_in<myword> d;
+    sc_out<myword> q;
 
     void m() {
         q.write(d);

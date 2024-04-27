@@ -2,13 +2,15 @@
 #define GLOBAL_H
 #include "systemc.h"
 
-const int MYWORD_LENGTH = 4;
-const int MYLONGWORD_LENGTH = 8;
-const int MIPSWORD_LENGTH = 32;
+const int MYWORD_LENGTH = 32;
+const int MYSHORTWORD_LENGTH = 16;
+const int MYADDRESSWORD_LENGTH = 5;
 
 using myword = sc_bv<MYWORD_LENGTH>;
-using mylongword = sc_bv<MYLONGWORD_LENGTH>;
-using mipsword = sc_bv<MIPSWORD_LENGTH>;
+using myshortword = sc_bv<MYSHORTWORD_LENGTH>;
+using my6bitword = sc_bv<6>;
+using myaddressword = sc_bv<MYADDRESSWORD_LENGTH>;
+using myopword = my6bitword;
 
 enum opcodes {
     op_add, //0

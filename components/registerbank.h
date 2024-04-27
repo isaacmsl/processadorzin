@@ -3,18 +3,20 @@
 #include "register.h"
 
 SC_MODULE(myregisterbank) {
-    sc_in<bool> clk;
+    const static int banksize = 1 << MYADDRESSWORD_LENGTH;
+
+    sc_in<bool> clk, write;
     sc_in<myword> data;
-    sc_in<myword> addr1, addr2, addr_write;
+    sc_in<myaddressword> addr1, addr2, addr_write;
     sc_out<myword> out1, out2;
-    std::array<myword, 1 << MYWORD_LENGTH> bank;
+    std::array<myword, banksize> bank;
 
     void m() {
-        if (clk) {
-            bank[ word_to_int(addr_write.read()) ] = data.read();
-        } else if (!clk) {
-            out1.write(bank[ word_to_int(addr1.read()) ]);
-            out2.write(bank[ word_to_int(addr2.read()) ]);
+        if (clk.read()) {
+            bank[ word_to_int(addr_write.read()) % banksize ] = data.read();
+        } else if (!(clk.read()) && write.read()) {
+            out1.write(bank[ word_to_int(addr1.read()) % banksize ]);
+            out2.write(bank[ word_to_int(addr2.read()) % banksize ]);
         }
     }
 

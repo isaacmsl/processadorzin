@@ -23,11 +23,11 @@ SC_MODULE (myula) {
   
   sc_in<myword>   alu_in1;
   sc_in<myword>   alu_in2;
-  sc_in<myword>   alu_sel;
+  sc_in<myopword>   alu_sel;
                  
-  sc_out<myword>  alu_out; 
-  sc_out<bool>   c_out; 
-  sc_out<bool>   zero_out; 
+  sc_out<myword>  alu_out;
+  sc_out<bool>   c_out;
+  sc_out<bool>   zero_out;
   sc_in_clk      clock;
   
   void alu () {
@@ -42,7 +42,7 @@ SC_MODULE (myula) {
     if(read_ == op_add)//Suma
     {
         alu_out.write(alu_in1_int + alu_in2_int);
-        c_out.write((alu_in1_int + alu_in2_int) >= (1 << MYWORD_LENGTH));
+        c_out.write((alu_in1_int + alu_in2_int) >= (1 << MYSHORTWORD_LENGTH));
     }
 
     if(read_ == op_sub)//Resta

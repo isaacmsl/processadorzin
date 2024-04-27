@@ -7,9 +7,9 @@ SC_MODULE(myregister) {
     sc_out<myword> q;
 
     void m() {
-        if (clr) {
+        if (clr.read()) {
             q.write(0);
-        } else if (ld) {
+        } else if (ld.read()) {
             q.write(d);
         }
     }

@@ -4,8 +4,8 @@
 #include <iomanip>
 
 SC_MODULE(mysigextender) {
-    sc_in<myword> A;
-    sc_out<mylongword> S;
+    sc_in<myshortword> A;
+    sc_out<myword> S;
 
     void m() {
         S.write(A.read());

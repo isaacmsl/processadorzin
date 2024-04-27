@@ -2,10 +2,13 @@
 #include "../global.h"
 
 SC_MODULE(myulacontrol) {
-    sc_in<myword> op, f;
-    sc_out<myword> S;
+    sc_in<my6bitword> op, f;
+    sc_out<myopword> S;
 
     void m() {
+
+        // logic with f and op
+
         S.write(op);
     }
 

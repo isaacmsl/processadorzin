@@ -1,6 +1,7 @@
 #include "systemc.h"
 #include "global.h"
 #include "components/adder.h"
+#include "components/bitshifter.h"
 #include "components/ulacontrol.h"
 #include "components/control.h"
 #include "components/memory.h"
@@ -9,6 +10,7 @@
 #include "components/registerbank.h"
 #include "components/signalextender.h"
 #include "components/ula.h"
+#include "processor_monitor.h"
 
 
 void processor() {
@@ -17,73 +19,175 @@ void processor() {
 
     // Signals
 
-    sc_signal<bool> dataMemory_write, dataMemory_read, instructionMemory_read,
+    sc_signal<bool> instructionMemory_read, MemRead, MemWrite, MemToReg, 
                     ula_zero, ula_carry,
-                    RegDst;
+                    RegDst, ALUSrc, RegWrite, PCSrc, InstMemWrite;
     
-    sc_signal<myword> instructionMemory_out, dataMemory_out, instructionMemory_addr, dataMemory_addr,
-                        dataMemory_data,
-                        ula_out, ula_sel,
-                        address_read1, address_read2, address_write,
-                        RegisterMux_out,
-                        data_read1, data_read2;
-                        
-
-    // Components
+    sc_signal<myword> instructionMemory_out, dataMemory_out, instructionMemory_addr,
+                        ula_out,
+                        UlaMux_out, DataMemoryMux_out, pcMux_out,
+                        data_read1, data_read2,
+                        signExtend_out,
+                        Left2BitShifter_out,
+                        adderRight_out, adderLeft_out,
+                        pc_out,
+                        InstMemData;
     
-    myregisterbank Registers("Registers"); // complete
-    Registers.data(RegisterMux_out);
-    Registers.addr1(address_read1);
-    Registers.addr2(address_read2);
-    Registers.addr_write(address_write);
-    Registers.out1(data_read1);
-    Registers.out2(data_read2);
-    Registers.clk(clock);
+    sc_signal<myaddressword> address_write,
+                            RegisterMux_out,
+                            instructionMemory_outA, instructionMemory_outB, instructionMemory_outC;
 
-    myula Ula("Ula"); // complete
-    Ula.alu_in1(data_read1);
-    Ula.alu_in2(data_read2);
-    Ula.alu_sel(ula_sel);
-    Ula.alu_out(ula_out);
-    Ula.zero_out(ula_zero);
-    Ula.c_out(ula_carry);
+    sc_signal<myshortword> instructionMemory_outD;
 
-    mymemory InstructionMemory("InstructionMemory"); // complete
+    sc_signal<my6bitword> ALUop, instructionMemory_outE, instructionMemory_outF; // opcode, func
+
+    sc_signal<myopword> ula_sel;
+
+    // Monitor
+
+    mon<myword> Monitor("Monitor");
+	Monitor.clk(clock);
+    
+    // --------------- processor ---------------
+
+    mymemory InstructionMemory("InstructionMemory");
     InstructionMemory.read(instructionMemory_read);
-    InstructionMemory.write(sc_signal<bool>(0));
-    InstructionMemory.data(sc_signal<myword>(0));
+    InstructionMemory.write(InstMemWrite);
+    InstructionMemory.data(InstMemData);
     InstructionMemory.addr(instructionMemory_addr);
     InstructionMemory.out(instructionMemory_out);
     InstructionMemory.clk(clock);
 
-    mymemory DataMemory("DataMemory"); // complete
-    DataMemory.read(dataMemory_read);
-    DataMemory.write(dataMemory_write);
-    DataMemory.data(dataMemory_data);
-    DataMemory.addr(dataMemory_addr);
+    // splitting instructionMemory_out to A,B,C ...
+
+    myaddressword A, B, C;
+    myshortword D;
+    my6bitword E, F;
+    myword instruction = instructionMemory_out.read();
+
+    for (int i{0}; i < MYWORD_LENGTH;i ++) {
+
+        bool i_bit = instruction.get_bit(i);
+        
+        if (i <= 15) {
+            D.set_bit(i, i_bit);
+            if (i <= 5) {E.set_bit(i, i_bit);}
+            if (i >= 11) {C.set_bit(i, i_bit);}
+        }
+        else {
+            if (i <= 20) {B.set_bit(i, i_bit);}
+            else if (i <= 25) {A.set_bit(i, i_bit);}
+            else {F.set_bit(i, i_bit);}
+        }
+
+    }
+
+    instructionMemory_outA.write(A);
+    instructionMemory_outB.write(B);
+    instructionMemory_outC.write(C);
+    instructionMemory_outD.write(D);
+    instructionMemory_outE.write(E);
+    instructionMemory_outF.write(F);
+
+    // going back to the other components...
+
+    mycontrol Control("Control");
+	Control.opcode(instructionMemory_outF);
+    Control.zero(ula_zero);
+    Control.MemWrite(MemWrite);
+    Control.MemRead(MemRead);
+    Control.RegDst(RegDst);
+    Control.ALUSrc(ALUSrc);
+    Control.RegWrite(RegWrite);
+    Control.ALUop(ALUop);
+    Control.MemToReg(MemToReg);
+    Control.PCSrc(PCSrc);
+    
+    mymux<myaddressword> RegisterMux("RegisterMux");
+    RegisterMux.sel(RegDst);
+    RegisterMux.in1(instructionMemory_outB);
+    RegisterMux.in2(instructionMemory_outC);
+    RegisterMux.S(RegisterMux_out);
+
+    myregisterbank Registers("Registers");
+    Registers.write(RegWrite);
+    Registers.data(DataMemoryMux_out);
+    Registers.addr1(instructionMemory_outA);
+    Registers.addr2(instructionMemory_outB);
+    Registers.addr_write(RegisterMux_out);
+    Registers.out1(data_read1);
+    Registers.out2(data_read2);
+    Registers.clk(clock);
+
+    mysigextender signalExtend("signalExtend");
+    signalExtend.A(instructionMemory_outD);
+    signalExtend.S(signExtend_out);
+
+    mymux<myword> UlaMux("UlaMux");
+    UlaMux.sel(ALUSrc);
+    UlaMux.in1(data_read2);
+    UlaMux.in2(signExtend_out);
+    UlaMux.S(UlaMux_out);
+
+    myulacontrol UlaControl("UlaControl");
+    UlaControl.f(instructionMemory_outE);
+    UlaControl.op(ALUop);
+    UlaControl.S(ula_sel);
+
+    myula Ula("Ula");
+    Ula.alu_in1(data_read1);
+    Ula.alu_in2(UlaMux_out);
+    Ula.alu_sel(ula_sel);
+    Ula.alu_out(ula_out);
+    Ula.zero_out(ula_zero);
+    Ula.c_out(ula_carry);
+    Ula.clock(clock);
+
+    mymemory DataMemory("DataMemory");
+    DataMemory.read(MemRead);
+    DataMemory.write(MemWrite);
+    DataMemory.data(data_read2);
+    DataMemory.addr(ula_out);
     DataMemory.out(dataMemory_out);
     DataMemory.clk(clock);
 
-    mycontrol Control("Control");
-	Control.opcode(instructionMemory_out); // not the entire instruction!!!!!
-    Control.zero(ula_zero);
-    Control.MemWrite(dataMemory_write);
-    Control.MemRead(dataMemory_read);
-    Control.RegDst(RegDst);
+    mymux<myword> DataMemoryMux("DataMemoryMux");
+    DataMemoryMux.sel(MemToReg);
+    DataMemoryMux.in1(dataMemory_out);
+    DataMemoryMux.in2(ula_out);
+    DataMemoryMux.S(DataMemoryMux_out);
 
-    mymux RegisterMux("RegisterMux"); // complete
-    RegisterMux.sel(RegDst);
-    RegisterMux.in1(instructionMemory_out); // not the entire instruction!!!!!
-    RegisterMux.in2(instructionMemory_out); // not the entire instruction!!!!!
-    RegisterMux.S(RegisterMux_out);
+    // north part
 
-    /*
-	myadder Somador("adder1");
-	Somador.A(A);
-	Somador.B(B);
-	Somador.S(S);
-	Somador.CO(CO);
-    */
+    mypc pc("pc");
+    pc.d(pcMux_out);
+    pc.q(pc_out);
+    pc.clk(clock);
 
+    sc_signal<myword> four;
+    four.write(myword(4));
+
+    myadder adderLeft("adderLeft");
+	adderLeft.A(pc_out);
+	adderLeft.B(four);
+	adderLeft.S(adderLeft_out);
+    sc_signal<bool> left_co;adderLeft.CO(left_co);
+
+    myshifter<2, false> Left2BitShifter("Left2BitShifter");
+    Left2BitShifter.A(signExtend_out);
+    Left2BitShifter.S(Left2BitShifter_out);
+
+	myadder adderRight("adderRight");
+	adderRight.A(adderLeft_out);
+	adderRight.B(Left2BitShifter_out);
+	adderRight.S(adderRight_out);
+	sc_signal<bool> right_co;adderRight.CO(right_co);
+
+    mymux<myword> pcMux("pcMux");
+    pcMux.sel(PCSrc);
+    pcMux.in1(adderLeft_out);
+    pcMux.in2(adderRight_out);
+    pcMux.S(pcMux_out);
+    
 	sc_start(15, SC_SEC);
 }

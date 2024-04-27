@@ -3,9 +3,9 @@
 
 SC_MODULE(mycontrol) {
     sc_in<bool> zero;
-    sc_in<myword> opcode, func;
+    sc_in<my6bitword> opcode;
     sc_out<bool> RegWrite, RegDst, ALUSrc, MemWrite, MemRead, MemToReg, PCSrc;
-    sc_out<myword> ALUop;
+    sc_out<my6bitword> ALUop;
 
     void m() {
         // Reseting signals
@@ -44,6 +44,6 @@ SC_MODULE(mycontrol) {
 
     SC_CTOR(mycontrol) {
         SC_METHOD(m);
-		sensitive << opcode << func << zero;
+		sensitive << opcode << zero;
     }
 };
