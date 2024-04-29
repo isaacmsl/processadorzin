@@ -106,7 +106,7 @@ void processor() {
     myadder adderLeft("adderLeft");
 	adderLeft.A(pc_out);
 	adderLeft.B(address_displacement);
-	adderLeft.S(adderLeft_out); // TODO: save into IF/ID buffer
+	adderLeft.S(adderLeft_out);
     sc_signal<bool> left_co;adderLeft.CO(left_co);
 
     mymemory<1> InstructionMemory("InstructionMemory");
@@ -125,7 +125,7 @@ void processor() {
     PC_IFID.clk(clock);
     PC_IFID.ld(pcLd_IFID); // TODO: when CLK = 1
     PC_IFID.clr(pcClr_IFID); // TODO: when?
-    PC_IFID.d(pc_out);
+    PC_IFID.d(adderLeft_out);
     PC_IFID.q(pc_IFID); // used to buffer in ID/EX
 
     // instruction buffer IF/ID
