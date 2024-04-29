@@ -32,6 +32,10 @@ SC_MODULE (myula) {
   
   void alu () {
 
+    if (clock.read() == 0) {
+        return;
+    }
+
     int alu_in1_int = word_to_int(alu_in1.read());
     int alu_in2_int = word_to_int(alu_in2.read());
     short read_ = word_to_int(alu_sel.read());
@@ -114,6 +118,6 @@ SC_MODULE (myula) {
     
   SC_CTOR(myula) {
         SC_METHOD(alu);
-        sensitive << clock.pos() << alu_in1 << alu_in2;
+        sensitive << clock;
     } 
 };

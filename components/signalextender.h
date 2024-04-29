@@ -3,9 +3,10 @@
 
 #include <iomanip>
 
+template<typename a, typename b>
 SC_MODULE(mysigextender) {
-    sc_in<myshortword> A;
-    sc_out<myword> S;
+    sc_in<a> A;
+    sc_out<b> S;
 
     void m() {
         S.write(A.read());

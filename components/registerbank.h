@@ -15,7 +15,7 @@ SC_MODULE(myregisterbank) {
     std::array<myword, banksize> bank;
 
     void m() {
-        if (clk.read() && write.read()) {
+        if (clk.read() == 0 && write.read()) {
             bank[ my_to_int<myaddressword>(addr_write.read()) % banksize ] = data.read();
 
         } else {
@@ -28,7 +28,7 @@ SC_MODULE(myregisterbank) {
 
     SC_CTOR(myregisterbank): clk("CLK") {
         SC_METHOD(m);
-		sensitive << clk.pos() << addr1 << addr2 << data << addr_write << write;
+		sensitive << clk << addr1 << addr2 << data << addr_write << write;
     }
 };
 

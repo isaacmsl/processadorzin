@@ -4,6 +4,7 @@
 #include "systemc.h"
 #include "../global.h"
 
+template<int clk_type>
 SC_MODULE(mymemory) {
     const static int memSize = 1 << 10;
 
@@ -13,6 +14,11 @@ SC_MODULE(mymemory) {
     std::array<myword, memSize> ram_array;
 
     void m() {
+
+        if (clk.read() != clk_type) {
+            return;
+        }
+
         // getting addr as int
         int addr_as_int = word_to_int(addr.read())  % (memSize);
         // writting
