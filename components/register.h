@@ -9,9 +9,9 @@ SC_MODULE(myregister) {
 
     void m() {
         if (clk.read() == clk_type) {
-            if (clr.read()) {
+            if (false) {//clr.read()
                 q.write(0);
-            } else if (ld.read()) {
+            } else if (true) { //l.read()
                 q.write(d);
             }
         }

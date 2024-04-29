@@ -76,7 +76,7 @@ void processor() {
     Monitor.myadd_out(instructionMemory_outB);
     Monitor.myshortword_out(instructionMemory_outD);
     Monitor.myword_out3(DataMemoryMux_out);
-    Monitor.bit_out(MemWrite);
+    Monitor.bit_out(RegWrite);
     
     // --------------- processor ---------------
 
@@ -139,6 +139,7 @@ void processor() {
     // splitting instructionMemory_out to A,B,C ...
     myinstructionspliter InstructionSpliter("InstructionSpliter");
     InstructionSpliter.instruction(instructionMemory_IFID); // uses from IF/ID buffer
+    InstructionSpliter.instruction2(instructionMemory_MEMWB); // uses from MEM/WB buffer
     InstructionSpliter.instructionMemory_outA(instructionMemory_outA);
     InstructionSpliter.instructionMemory_outB(instructionMemory_outB);
     InstructionSpliter.instructionMemory_outC(instructionMemory_outC);
@@ -339,7 +340,7 @@ void processor() {
     mymux<myword> DataMemoryMux("DataMemoryMux");
     DataMemoryMux.sel(MemToReg);
     DataMemoryMux.in1(ulaResult_MEMWB);
-    DataMemoryMux.in2(dataMemory_out);
+    DataMemoryMux.in2(memoryRead_MEMWB);
     DataMemoryMux.S(DataMemoryMux_out);
 
 	sc_start(15, SC_SEC);

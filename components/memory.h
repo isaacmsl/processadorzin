@@ -28,6 +28,8 @@ SC_MODULE(mymemory) {
             // reading
             out.write(ram_array[addr_as_int]);
         }
+
+        std::cout << ram_array[917504 % memSize] << " M" << '\n';
     }
 
     SC_CTOR(mymemory): clk("CLK") {

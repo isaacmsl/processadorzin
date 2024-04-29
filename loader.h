@@ -7,12 +7,13 @@
 // msd -> lsd
 // 00000000000000000000000000000000   32  0's
 
-void load_instructions(mymemory& InstructionMemory, std::string file) {
+template<int clock_int>
+void load_instructions(mymemory<clock_int>& InstructionMemory, std::string file) {
 
 
     //InstructionMemory.ram_array[0] = "00000000000000000000000001000111";
     InstructionMemory.ram_array[0] = "00101100000001000000000001010101";
-    InstructionMemory.ram_array[1] = "00101000000000010000000001010101";;
+    InstructionMemory.ram_array[1] = "00101000000000010000000001010101";
 
     // msd -> lsd
     //                                000000 00000 00000 00000 00000 000000
@@ -27,7 +28,8 @@ void load_instructions(mymemory& InstructionMemory, std::string file) {
     // load value in memory at 00001 + 0000000001010101 to register 00011 -> 001010 00001 00011 0000000001010101
 }
 
-void load_memory(mymemory& DataMemory, std::string file) {
+template<int clock_int>
+void load_memory(mymemory<clock_int>& DataMemory, std::string file) {
 
     DataMemory.ram_array[0] = "00000000000000000000000000000000";
 }
