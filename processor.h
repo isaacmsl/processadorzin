@@ -25,7 +25,8 @@ void processor() {
 
     sc_signal<bool> instructionMemory_read, MemRead, MemWrite, MemToReg, 
                     ula_zero, ula_carry,
-                    RegDst, ALUSrc, RegWrite, PCSrc, PCSrc_, InstMemWrite;
+                    RegDst, ALUSrc, RegWrite, PCSrc, PCSrc_, InstMemWrite,
+                    pcLd_IFID, pcClr_IFID, instructionMemoryLd_IFID, instructionMemoryClr_IFID;
     
     sc_signal<myword> instructionMemory_out, dataMemory_out,
                         ula_out,
@@ -35,7 +36,9 @@ void processor() {
                         BitShifter_out,
                         adderRight_out, adderLeft_out,
                         pc_out,
-                        InstMemData;
+                        InstMemData,
+                        instructionMemory_IFID,
+                        pc_IFID;
     
     sc_signal<myaddressword> address_write,
                             RegisterMux_out,
@@ -46,6 +49,7 @@ void processor() {
     sc_signal<my6bitword> ALUop, instructionMemory_outE, instructionMemory_outF; // opcode, func
 
     sc_signal<myopword> ula_sel;
+    
 
     // Monitor
 
@@ -61,7 +65,34 @@ void processor() {
     
     // --------------- processor ---------------
 
+    // --------------- IF/ID sector ---------------
     instructionMemory_read.write(1);
+
+    mymux<myword> pcMux("pcMux");
+    pcMux.sel(PCSrc_);
+    pcMux.in1(adderLeft_out);
+    pcMux.in2(adderRight_out);
+    pcMux.S(pcMux_out);
+
+    mypc pc("pc");
+    pc.d(pcMux_out);
+    pc.q(pc_out);
+    pc.clk(clock);
+
+    myprePCSrc prePCSrc("PCScrc");
+    prePCSrc.PCSrc(PCSrc);
+    prePCSrc.Ula_out(ula_out);
+    prePCSrc.opcode(instructionMemory_outF);
+    prePCSrc.PCSrc_(PCSrc_);
+
+    sc_signal<myword> address_displacement;
+    address_displacement.write(myword(1));
+
+    myadder adderLeft("adderLeft");
+	adderLeft.A(pc_out);
+	adderLeft.B(address_displacement);
+	adderLeft.S(adderLeft_out); // TODO: save into IF/ID buffer
+    sc_signal<bool> left_co;adderLeft.CO(left_co);
 
     mymemory InstructionMemory("InstructionMemory");
 
@@ -74,15 +105,33 @@ void processor() {
 
     load_instructions(InstructionMemory, "-");
 
+    // incremented pc buffer IF/ID
+    myregister PC_IFID("PC_IFID");
+    PC_IFID.clk(clock);
+    PC_IFID.ld(pcLd_IFID); // TODO: when CLK = 1
+    PC_IFID.clr(pcClr_IFID); // TODO: when?
+    PC_IFID.d(pc_out);
+    PC_IFID.q(pc_IFID); // TODO: where use?
+
+    // instruction buffer IF/ID
+    myregister Instruction_IFID("Instruction_IFID");
+    Instruction_IFID.clk(clock);
+    Instruction_IFID.ld(instructionMemoryLd_IFID); // TODO: when CLK = 1
+    Instruction_IFID.clr(instructionMemoryClr_IFID); // TODO: when?
+    Instruction_IFID.d(instructionMemory_out);
+    Instruction_IFID.q(instructionMemory_IFID);
+
     // splitting instructionMemory_out to A,B,C ...
     myinstructionspliter InstructionSpliter("InstructionSpliter");
-    InstructionSpliter.instruction(instructionMemory_out);
+    InstructionSpliter.instruction(instructionMemory_IFID); // uses from IF/ID buffer
     InstructionSpliter.instructionMemory_outA(instructionMemory_outA);
     InstructionSpliter.instructionMemory_outB(instructionMemory_outB);
     InstructionSpliter.instructionMemory_outC(instructionMemory_outC);
     InstructionSpliter.instructionMemory_outD(instructionMemory_outD);
     InstructionSpliter.instructionMemory_outE(instructionMemory_outE);
     InstructionSpliter.instructionMemory_outF(instructionMemory_outF);
+
+    // --------------- ID/EX sector ---------------
 
     mycontrol Control("Control");
 	Control.opcode(instructionMemory_outF);
@@ -154,22 +203,6 @@ void processor() {
     DataMemoryMux.in2(dataMemory_out);
     DataMemoryMux.S(DataMemoryMux_out);
 
-    // north part
-
-    mypc pc("pc");
-    pc.d(pcMux_out);
-    pc.q(pc_out);
-    pc.clk(clock);
-
-    sc_signal<myword> address_displacement;
-    address_displacement.write(myword(1));
-
-    myadder adderLeft("adderLeft");
-	adderLeft.A(pc_out);
-	adderLeft.B(address_displacement);
-	adderLeft.S(adderLeft_out);
-    sc_signal<bool> left_co;adderLeft.CO(left_co);
-
     myshifter<0, false> BitShifter("BitShifter");
     BitShifter.A(signExtend_out);
     BitShifter.S(BitShifter_out);
@@ -179,18 +212,6 @@ void processor() {
 	adderRight.B(BitShifter_out);
 	adderRight.S(adderRight_out);
 	sc_signal<bool> right_co;adderRight.CO(right_co);
-
-    myprePCSrc prePCSrc("PCScrc");
-    prePCSrc.PCSrc(PCSrc);
-    prePCSrc.Ula_out(ula_out);
-    prePCSrc.opcode(instructionMemory_outF);
-    prePCSrc.PCSrc_(PCSrc_);
-
-    mymux<myword> pcMux("pcMux");
-    pcMux.sel(PCSrc_);
-    pcMux.in1(adderLeft_out);
-    pcMux.in2(adderRight_out);
-    pcMux.S(pcMux_out);
 
 	sc_start(15, SC_SEC);
 }
