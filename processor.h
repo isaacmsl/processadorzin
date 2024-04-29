@@ -26,7 +26,8 @@ void processor() {
     sc_signal<bool> instructionMemory_read, MemRead, MemWrite, MemToReg, 
                     ula_zero, ula_carry,
                     RegDst, ALUSrc, RegWrite, PCSrc, PCSrc_, InstMemWrite,
-                    pcLd_IFID, pcClr_IFID, instructionMemoryLd_IFID, instructionMemoryClr_IFID;
+                    pcLd_IFID, pcClr_IFID, instructionMemoryLd_IFID, instructionMemoryClr_IFID,
+                    pcLd_IDEX, pcClr_IDEX, instructionMemoryLd_IDEX, instructionMemoryClr_IDEX;
     
     sc_signal<myword> instructionMemory_out, dataMemory_out,
                         ula_out,
@@ -37,8 +38,8 @@ void processor() {
                         adderRight_out, adderLeft_out,
                         pc_out,
                         InstMemData,
-                        instructionMemory_IFID,
-                        pc_IFID;
+                        instructionMemory_IFID, pc_IFID,
+                        instructionMemory_IDEX, pc_IDEX, dataRead1_IDEX, dataRead2_IDEX, signalExtend_IDEX;
     
     sc_signal<myaddressword> address_write,
                             RegisterMux_out,
@@ -111,7 +112,7 @@ void processor() {
     PC_IFID.ld(pcLd_IFID); // TODO: when CLK = 1
     PC_IFID.clr(pcClr_IFID); // TODO: when?
     PC_IFID.d(pc_out);
-    PC_IFID.q(pc_IFID); // TODO: where use?
+    PC_IFID.q(pc_IFID); // used to buffer in ID/EX
 
     // instruction buffer IF/ID
     myregister Instruction_IFID("Instruction_IFID");
@@ -167,10 +168,52 @@ void processor() {
     signalExtend.A(instructionMemory_outD);
     signalExtend.S(signExtend_out);
 
+    // incremented pc buffer ID/EX
+    myregister PC_IDEX("PC_IDEX");
+    PC_IDEX.clk(clock);
+    PC_IDEX.ld(pcLd_IDEX); // TODO: when CLK = 0
+    PC_IDEX.clr(pcClr_IDEX); // TODO: when?
+    PC_IDEX.d(pc_IFID);
+    PC_IDEX.q(pc_IDEX); // TODO: where use?
+
+    // instruction buffer ID/EX
+    myregister Instruction_IDEX("Instruction_IDEX");
+    Instruction_IDEX.clk(clock);
+    Instruction_IDEX.ld(instructionMemoryLd_IDEX); // TODO: when CLK = 0
+    Instruction_IDEX.clr(instructionMemoryClr_IDEX); // TODO: when?
+    Instruction_IDEX.d(instructionMemory_IFID);
+    Instruction_IDEX.q(instructionMemory_IDEX);
+
+    // data read 1 buffer ID/EX
+    myregister DataRead1_IDEX("DataRead1_IDEX");
+    DataRead1_IDEX.clk(clock);
+    DataRead1_IDEX.ld(dataRead1Ld_IDEX); // TODO: when CLK = 0
+    DataRead1_IDEX.clr(dataRead1Clr_IDEX); // TODO: when?
+    DataRead1_IDEX.d(data_read1);
+    DataRead1_IDEX.q(dataRead1_IDEX);
+
+    // data read 2 buffer ID/EX
+    myregister DataRead2_IDEX("DataRead2_IDEX");
+    DataRead2_IDEX.clk(clock);
+    DataRead2_IDEX.ld(dataRead2Ld_IDEX); // TODO: when CLK = 0
+    DataRead2_IDEX.clr(dataRead2Clr_IDEX); // TODO: when?
+    DataRead2_IDEX.d(data_read2);
+    DataRead2_IDEX.q(dataRead2_IDEX);
+
+    // signal extend buffer ID/EX
+    myregister SignalExtend_IDEX("SignalExtend_IDEX");
+    SignalExtend_IDEX.clk(clock);
+    SignalExtend_IDEX.ld(signalExtendLd_IDEX); // TODO: when CLK = 0
+    SignalExtend_IDEX.clr(signalExtendClr_IDEX); // TODO: when?
+    SignalExtend_IDEX.d(signExtend_out);
+    SignalExtend_IDEX.q(signalExtend_IDEX);
+
+    // --------------- EX/MEM sector ---------------
+
     mymux<myword> UlaMux("UlaMux");
     UlaMux.sel(ALUSrc);
-    UlaMux.in1(data_read2);
-    UlaMux.in2(signExtend_out);
+    UlaMux.in1(dataRead2_IDEX);
+    UlaMux.in2(signalExtend_IDEX);
     UlaMux.S(UlaMux_out);
 
     myulacontrol UlaControl("UlaControl");
@@ -179,7 +222,7 @@ void processor() {
     UlaControl.S(ula_sel);
 
     myula Ula("Ula");
-    Ula.alu_in1(data_read1);
+    Ula.alu_in1(dataRead1_IDEX);
     Ula.alu_in2(UlaMux_out);
     Ula.alu_sel(ula_sel);
     Ula.alu_out(ula_out);
@@ -190,7 +233,7 @@ void processor() {
     mymemory DataMemory("DataMemory");
     DataMemory.read(MemRead);
     DataMemory.write(MemWrite);
-    DataMemory.data(data_read2);
+    DataMemory.data(dataRead2_IDEX);
     DataMemory.addr(ula_out);
     DataMemory.out(dataMemory_out);
     DataMemory.clk(clock);
@@ -204,7 +247,7 @@ void processor() {
     DataMemoryMux.S(DataMemoryMux_out);
 
     myshifter<0, false> BitShifter("BitShifter");
-    BitShifter.A(signExtend_out);
+    BitShifter.A(signalExtend_IDEX);
     BitShifter.S(BitShifter_out);
 
 	myadder adderRight("adderRight");
