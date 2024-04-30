@@ -1,17 +1,18 @@
 #include "systemc.h"
-#include "processor_variables.h"
-#include "global.h"
+#include "variables.h"
+#include "../global.h"
 
-#include "components/memory.h"
-#include "components/mux.h"
-#include "components/pc.h"
-#include "components/instructionspliter.h"
+#include "../components/memory.h"
+#include "../components/mux.h"
+#include "../components/pc.h"
+#include "../components/instructionspliter.h"
 
 #include "loader.h"
 
 // --------------- IF/ID sector ---------------
 
 void ifid(sc_clock &myclock) {
+
     instMemRead.write(1);
 
     mymux<myword> pcMux("pcMux");
@@ -19,6 +20,8 @@ void ifid(sc_clock &myclock) {
     pcMux.in1(adderLeft_out);
     pcMux.in2(adderRight_out);
     pcMux.S(pcMux_out);
+
+    /* 
 
     mypc pc("pc");
     pc.d(pcMux_out);
@@ -64,4 +67,6 @@ void ifid(sc_clock &myclock) {
     InstructionSpliter.instructionMemory_outD(instructionMemory_outD);
     InstructionSpliter.instructionMemory_outE(instructionMemory_outE);
     InstructionSpliter.instructionMemory_outF(instructionMemory_outF);
+
+    */
 }

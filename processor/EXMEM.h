@@ -1,16 +1,15 @@
 #include "systemc.h"
-#include "processor_variables.h"
-#include "global.h"
+#include "variables.h"
+#include "../global.h"
 
-#include "components/memory.h"
-#include "components/mux.h"
-#include "components/ula.h"
-#include "components/ulacontrol.h"
-#include "components/bitshifter.h"
-#include "components/register.h"
-
-#include "components/adder.h"
-#include "components/signalextender.h"
+#include "../components/memory.h"
+#include "../components/mux.h"
+#include "../components/ula.h"
+#include "../components/ulacontrol.h"
+#include "../components/bitshifter.h"
+#include "../components/register.h"
+#include "../components/adder.h"
+#include "../components/signalextender.h"
 
 // --------------- EX/MEM sector ---------------
 

@@ -1,11 +1,11 @@
 #include "systemc.h"
-#include "processor_variables.h"
+#include "variables.h"
 #include "global.h"
 
-#include "components/prePCSrc.h"
-#include "components/memory.h"
-#include "components/register.h"
-#include "components/mux.h"
+#include "../components/prePCSrc.h"
+#include "../components/memory.h"
+#include "../components/register.h"
+#include "../components/mux.h"
 
 #include "loader.h"
 

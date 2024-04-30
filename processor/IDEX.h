@@ -1,12 +1,12 @@
 #include "systemc.h"
-#include "processor_variables.h"
-#include "global.h"
+#include "variables.h"
+#include "../global.h"
 
-#include "components/memory.h"
-#include "components/mux.h"
-#include "components/registerbank.h"
-#include "components/control.h"
-#include "components/signalextender.h"
+#include "../components/memory.h"
+#include "../components/mux.h"
+#include "../components/registerbank.h"
+#include "../components/control.h"
+#include "../components/signalextender.h"
 
 #include "loader.h"
 
