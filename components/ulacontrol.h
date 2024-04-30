@@ -3,7 +3,7 @@
 
 SC_MODULE(myulacontrol) {
     sc_in<my6bitword> op, f;
-    sc_out<myopword> S;
+    sc_out<my6bitword> S;
 
     void m() {
 

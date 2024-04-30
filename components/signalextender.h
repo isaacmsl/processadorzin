@@ -1,3 +1,6 @@
+#ifndef SIGNALEXTENDER_H
+#define SIGNALEXTENDER_H
+
 #include "systemc.h"
 #include "../global.h"
 
@@ -17,3 +20,5 @@ SC_MODULE(mysigextender) {
 		sensitive << A;
     }
 };
+
+#endif

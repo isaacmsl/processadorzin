@@ -1,19 +1,17 @@
+#ifndef PROCESSOR_VARIABLES_H
+#define PROCESSOR_VARIABLES_H
+
 #include "systemc.h"
 #include "global.h"
 
-#include "processor_monitor.h"
-#include "processor_IFID.h"
-#include "processor_IDEX.h"
-#include "processor_EXMEM.h"
-#include "processor_MEMWB.h"
+// Signals
 
-#include "processor_variables.h"
+sc_clock myclock("clk", 1, SC_SEC, 0.5, 0, SC_SEC, false);
 
 //
 // ---------------------- BOOL ----------------------
 //
 
-/*
 sc_signal<bool>
 
 ula_zero, ula_carry,
@@ -115,37 +113,6 @@ ALUop, ula_sel,
 aluOp_IDEX, opCode_IDEX, 
 opCode_EXMEM,
 aluOp_MEMWB;
-*/
 
-void processor() {
 
-    sc_clock myclock("clk", 1, SC_SEC, 0.5, 0, SC_SEC, false);
-
-    //
-    // ---------------------- MONITOR ----------------------
-    //
-
-    mon<myword> Monitor("Monitor");
-	Monitor.clk(myclock);
-    Monitor.myword_out1(data_read2);
-    Monitor.myword_out2(ula_out);
-    Monitor.my6bit_out(instructionMemory_outF);
-    Monitor.myadd_out(RegisterMux_out);
-    Monitor.myshortword_out(instructionMemory_outD);
-    Monitor.myword_out3(DataMemoryMux_out);
-    Monitor.bit_out(RegWrite);
-    
-    //
-    // ---------------------- PROCESSOR ----------------------
-    //
-
-    ifid(myclock);
-
-    idex(myclock);
-
-    exmen(myclock);
-
-    memwb(myclock);
-
-    sc_start(15, SC_SEC);
-}
+#endif

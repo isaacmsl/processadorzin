@@ -1,3 +1,6 @@
+#ifndef LOADER_H
+#define LOADER_H
+
 #include "systemc.h"
 #include "components/memory.h"
 #include "components/registerbank.h"
@@ -39,3 +42,5 @@ void load_registers(myregisterbank& RegisterBank, std::string file) {
     RegisterBank.bank[4] = "00000000000011100000000000000000";
     RegisterBank.bank[1] = "00000000000000000000000000000001";
 }
+
+#endif

@@ -10,7 +10,6 @@ using myword = sc_bv<MYWORD_LENGTH>;
 using myshortword = sc_bv<MYSHORTWORD_LENGTH>;
 using my6bitword = sc_bv<6>;
 using myaddressword = sc_bv<MYADDRESSWORD_LENGTH>;
-using myopword = my6bitword;
 
 enum opcodes {
     op_add, // add register1 with immediate (index 0)

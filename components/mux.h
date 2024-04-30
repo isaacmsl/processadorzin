@@ -1,3 +1,6 @@
+#ifndef MUX_H
+#define MUX_H
+
 #include "systemc.h"
 #include "../global.h"
 
@@ -16,3 +19,5 @@ SC_MODULE(mymux) {
 		sensitive << sel << in1 << in2;
     }
 };
+
+#endif

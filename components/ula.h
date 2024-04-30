@@ -23,7 +23,7 @@ SC_MODULE (myula) {
   
   sc_in<myword>   alu_in1;
   sc_in<myword>   alu_in2;
-  sc_in<myopword>   alu_sel;
+  sc_in<my6bitword>   alu_sel;
                  
   sc_out<myword>  alu_out;
   sc_out<bool>   c_out;
