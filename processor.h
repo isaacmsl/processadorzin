@@ -48,7 +48,9 @@ void processor() {
                     memWriteLd_IDEX, memWriteClr_IDEX,
                     opCodeLd_IDEX, opCodeClr_IDEX,
                     regWriteLd_IDEX, regWriteClr_IDEX,
-                    memToRegLd_IDEX, memToRegClr_IDEX;
+                    memToRegLd_IDEX, memToRegClr_IDEX
+                    regWrite_EXMEM, memToReg_EXMEM, RegDest_EXMEM, memRead_EXMEM, memWrite_EXMEM, opCode_EXMEM,
+                    regWrite_MEMWB, memToReg_MEMWB, RegDest_MEMWB, memRead_MEMWB, memWrite_MEMWB, opCode_MEMWB;
     
     sc_signal<myword> instructionMemory_out, dataMemory_out,
                         ula_out,
@@ -65,7 +67,9 @@ void processor() {
                         ulaResult_EXMEM, zero_EXMEM, ula_zero_myword,
                         dataRead2_EXMEM, ulaResult_MEMWB,
                         memoryRead_MEMWB, instructionMemory_MEMWB,
-                        aluOp_IDEX, aluSrc_IDEX, regDest_IDEX, memRead_IDEX, memWrite_IDEX, opCode_IDEX, regWrite_IDEX, memToReg_IDEX;
+                        aluOp_IDEX, aluSrc_IDEX, regDest_IDEX, memRead_IDEX, memWrite_IDEX, opCode_IDEX, regWrite_IDEX, memToReg_IDEX,
+                        aluOp_EXMEM, aluSrc_EXMEM, regDest_EXMEM, memRead_EXMEM, memWrite_EXMEM, opCode_EXMEM, regWrite_EXMEM, memToReg_EXMEM,
+                        aluOp_MEMWB, aluSrc_MEMWB, regDest_MEMWB, memRead_MEMWB, memWrite_MEMWB, opCode_MEMWB, regWrite_MEMWB, memToReg_MEMWB;
 
     
     sc_signal<myaddressword> address_write,
