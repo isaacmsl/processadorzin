@@ -49,8 +49,8 @@ SC_MODULE(myEXMEM) {
         UlaControl.S(ula_sel);
 
         RegisterMux.sel(regDest_IDEX);
-        RegisterMux.in1(instructionMemory_outB);
-        RegisterMux.in2(instructionMemory_outC);
+        RegisterMux.in1(instructionMemory_outC);
+        RegisterMux.in2(instructionMemory_outB);
         RegisterMux.S(RegisterMux_out);
 
         Ula.alu_in1(dataRead1_IDEX);

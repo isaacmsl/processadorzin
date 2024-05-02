@@ -19,13 +19,13 @@ void load_instructions(mymemory<clock_int>& InstructionMemory, std::string file)
     //InstructionMemory.ram_array[0] = "00101100000001000000000001010101";
     //InstructionMemory.ram_array[1] = "00101000000000010000000001010101";
 
-    InstructionMemory.ram_array[0] = "00000000001000000000000001000000";
+    InstructionMemory.ram_array[0] = "00000000001000100000000000000001";
 
     // msd -> lsd
     //                                000000 00000 00000 00000 00000 000000
     //                                opcode  r1   w1 r2   w2         func
     //                                                  |    Immediate
-    //                                001011 00000 00000 0000000001010101
+    //                                000000 00000 00000 0000000000000000
 
     // examples:
 

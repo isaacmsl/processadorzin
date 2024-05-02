@@ -15,7 +15,7 @@ sc_clock myclock("clk", 1, SC_SEC, 0.5, 0, SC_SEC, false);
 sc_signal<bool>
 
 ula_zero, ula_carry,
-MemRead, MemWrite, MemToReg, RegDst, ALUSrc, RegWrite, PCSrc, PCSrc_, instMemWrite, instMemRead,
+MemRead, MemWrite, MemToReg, RegDst, ALUSrc, RegWrite, Clr, PCSrc, PCSrc_, instMemWrite, instMemRead,
 
 // ----------- IF/ID -----------
 pcLd_IFID, pcClr_IFID, instructionMemoryLd_IFID, instructionMemoryClr_IFID,

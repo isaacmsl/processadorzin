@@ -79,8 +79,8 @@ SC_MODULE(myMEMWB) {
         // --------------- FINAL sector ---------------
 
         DataMemoryMux.sel(memToReg_MEMWB);
-        DataMemoryMux.in1(ulaResult_MEMWB);
-        DataMemoryMux.in2(memoryRead_MEMWB);
+        DataMemoryMux.in1(memoryRead_MEMWB);
+        DataMemoryMux.in2(ulaResult_MEMWB);
         DataMemoryMux.S(DataMemoryMux_out);
 
     }

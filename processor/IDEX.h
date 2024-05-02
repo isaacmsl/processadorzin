@@ -45,6 +45,8 @@ SC_MODULE(myIDEX) {
         Control.ALUop(ALUop);
         Control.MemToReg(MemToReg);
         Control.PCSrc(PCSrc);
+        Control.clk(myclock);
+        Control.clr(Clr);
 
         Registers.write(regWrite_MEMWB);
         Registers.data(DataMemoryMux_out);

@@ -2,8 +2,8 @@
 #include "../global.h"
 
 SC_MODULE(mycontrol) {
-    sc_in<bool> clk, clr;
-    sc_in<my6bitword> opcode, funct;
+    sc_in<bool> clk, clr, zero;
+    sc_in<my6bitword> opcode;
     sc_out<bool> RegWrite, RegDst, ALUSrc, MemWrite, MemRead, MemToReg, PCSrc;
     sc_out<my6bitword> ALUop;
 
@@ -26,7 +26,7 @@ SC_MODULE(mycontrol) {
                         PCSrc.write(0);
 
                         state = S1;
-                        break;
+                    break;
                     case S1: // processing next instruction
                         int opcode_int = word_to_int(opcode.read());
                         ALUop.write(opcode_int);
@@ -34,7 +34,15 @@ SC_MODULE(mycontrol) {
                         
                         switch(opcode_int) {
 
-                            case op_add: ALUSrc.write(1);break;
+                            case op_add:
+                            RegWrite.write(1);
+                            RegDst.write(0);
+                            ALUSrc.write(1);
+                            MemWrite.write(0);
+                            MemRead.write(0);
+                            MemToReg.write(1);
+                            PCSrc.write(0);
+                            break;
 
                             case op_sub: ALUSrc.write(1);break;
 
@@ -65,13 +73,12 @@ SC_MODULE(mycontrol) {
                             case op_jz: ALUop.write(op_sub);break;
 
                         }
-                        break;
-                    default:
-                        break;
+                    break;
                 }
             }        
-            else
+            else {
                 state = S0;
+            }
             wait();
         }
 

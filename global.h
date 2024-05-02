@@ -12,7 +12,7 @@ using my6bitword = sc_bv<6>;
 using myaddressword = sc_bv<MYADDRESSWORD_LENGTH>;
 
 enum opcodes {
-    op_add, // add register1 with immediate (index 0)
+    op_add, // add register1 with immediate and writes at register2 (index 0)
     op_sub, // sub register1 with immediate (index 1)
     op_mult, // mult register1 with immediate (index 2)
     op_div, // div register1 with immediate (index 3)
