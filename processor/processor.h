@@ -34,11 +34,14 @@ inline void processor() {
     myIFID ifid("ifid");
     ifid.myclock(myclock);
 
-    //idex(myclock);
+    myIDEX idex("idex");
+    idex.myclock(myclock);
 
-    //exmen(myclock);
+    myEXMEM exmen("exmen");
+    exmen.myclock(myclock);
 
-    //memwb(myclock);
+    myMEMWB memwb("memwb");
+    memwb.myclock(myclock);
 
     sc_start(15, SC_SEC);
 }
