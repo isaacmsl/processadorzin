@@ -2,7 +2,7 @@
 #define PROCESSOR_VARIABLES_H
 
 #include "systemc.h"
-#include "global.h"
+#include "../global.h"
 
 // Signals
 

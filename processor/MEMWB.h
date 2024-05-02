@@ -1,6 +1,6 @@
 #include "systemc.h"
 #include "variables.h"
-#include "global.h"
+#include "../global.h"
 
 #include "../components/prePCSrc.h"
 #include "../components/memory.h"

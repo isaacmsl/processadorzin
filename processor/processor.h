@@ -1,5 +1,5 @@
 #include "systemc.h"
-#include "global.h"
+#include "../global.h"
 
 #include "monitor.h"
 #include "IFID.h"
@@ -9,7 +9,7 @@
 
 #include "variables.h"
 
-void processor() {
+inline void processor() {
 
     sc_clock myclock("clk_legal", 1, SC_SEC, 0.5, 0, SC_SEC, false);
 
@@ -31,8 +31,8 @@ void processor() {
     // ---------------------- PROCESSOR ----------------------
     //
 
-
-    ifid(myclock);
+    myIFID ifid("ifid");
+    ifid.myclock(myclock);
 
     //idex(myclock);
 

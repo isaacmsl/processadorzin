@@ -2,8 +2,8 @@
 #define LOADER_H
 
 #include "systemc.h"
-#include "components/memory.h"
-#include "components/registerbank.h"
+#include "../components/memory.h"
+#include "../components/registerbank.h"
 
 // loading instructions in instruction memory
 
