@@ -34,6 +34,7 @@ SC_MODULE(myIDEX) {
     myregister<my6bitword> OpCode_IDEX{"OpCode_IDEX"};
     myregister<myaddressword> InstructionMemory_outB_IDEX{"InstructionMemory_outB_IDEX"};
     myregister<myaddressword> InstructionMemory_outC_IDEX{"InstructionMemory_outC_IDEX"};
+    myregister<my6bitword> InstructionMemory_outE_IDEX{"InstructionMemory_outE_IDEX"};
 
     SC_CTOR(myIDEX) {
 
@@ -168,6 +169,13 @@ SC_MODULE(myIDEX) {
         InstructionMemory_outC_IDEX.clr(instructionMemory_outCClr_IDEX);
         InstructionMemory_outC_IDEX.d(instructionMemory_outC);
         InstructionMemory_outC_IDEX.q(instructionMemory_outC_IDEX);
+
+        // Intructions E buffer ID/EX
+        InstructionMemory_outE_IDEX.clk(myclock);
+        InstructionMemory_outE_IDEX.ld(instructionMemory_outELd_IDEX);
+        InstructionMemory_outE_IDEX.clr(instructionMemory_outEClr_IDEX);
+        InstructionMemory_outE_IDEX.d(instructionMemory_outE);
+        InstructionMemory_outE_IDEX.q(instructionMemory_outE_IDEX);
 
     }
 };

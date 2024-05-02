@@ -45,9 +45,9 @@ SC_MODULE(myEXMEM) {
         UlaMux.in2(signalExtend_IDEX);
         UlaMux.S(ulaMux_out);
 
-        UlaControl.f(instructionMemory_outE);
+        UlaControl.f(instructionMemory_outE_IDEX);
         UlaControl.op(aluOp_IDEX);
-        UlaControl.S(ula_sel);
+        UlaControl.S(ula_sel); // Não está devolvendo o ula_sel correto antes da ula precisar dele
 
         RegisterMux.sel(regDest_IDEX);
         RegisterMux.in1(instructionMemory_outB_IDEX);
@@ -56,7 +56,7 @@ SC_MODULE(myEXMEM) {
 
         Ula.alu_in1(dataRead1_IDEX);
         Ula.alu_in2(ulaMux_out);
-        Ula.alu_sel(ula_sel);
+        Ula.alu_sel(instructionMemory_outE_IDEX); // GAMBIARRA WARNING
         Ula.alu_out(ula_out);
         Ula.zero_out(ula_zero);
         Ula.c_out(ula_carry);
@@ -65,7 +65,7 @@ SC_MODULE(myEXMEM) {
         BitShifter.A(signalExtend_IDEX);
         BitShifter.S(BitShifter_out);
 
-        adderRight.A(adderLeft_out);
+        adderRight.A(pc_IDEX);
         adderRight.B(BitShifter_out);
         adderRight.S(adderRight_out);
         adderRight.CO(right_co);

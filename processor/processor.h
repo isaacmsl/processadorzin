@@ -21,10 +21,10 @@ inline void processor() {
 	Monitor.clk(myclock);
     Monitor.myword_out1(data_read1);
     Monitor.myword_out2(ula_out);
-    Monitor.my6bit_out(instructionMemory_outF);
-    Monitor.myadd_out(RegisterMux_out_MEMWB);
-    Monitor.myshortword_out(instructionMemory_outD);
-    Monitor.myword_out3(DataMemoryMux_out);
+    Monitor.my6bit_out(instructionMemory_outE_IDEX); //instructionMemory_outF
+    Monitor.myadd_out(instructionMemory_outA);//RegisterMux_out_MEMWB
+    Monitor.myshortword_out(instructionMemory_outD); //aka opcode
+    Monitor.myword_out3(dataRead1_IDEX); //DataMemoryMux_out
     Monitor.bit_out(regWrite_MEMWB);
     
     //

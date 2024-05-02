@@ -34,6 +34,16 @@ SC_MODULE(mycontrol) {
                         
                         switch(opcode_int) {
 
+                            case unit:
+                            RegWrite.write(0);
+                            RegDst.write(0);
+                            ALUSrc.write(0);
+                            MemWrite.write(0);
+                            MemRead.write(0);
+                            MemToReg.write(0);
+                            PCSrc.write(0);
+                            break;
+
                             case op_add:
                             RegWrite.write(1);
                             RegDst.write(0);

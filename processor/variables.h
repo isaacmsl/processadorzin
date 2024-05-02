@@ -34,6 +34,7 @@ memToRegLd_IDEX, memToRegClr_IDEX, memToReg_IDEX,
 
 instructionMemory_outBLd_IDEX, instructionMemory_outBClr_IDEX,
 instructionMemory_outCLd_IDEX, instructionMemory_outCClr_IDEX,
+instructionMemory_outELd_IDEX, instructionMemory_outEClr_IDEX,
 
 // ----------- EX/MEM -----------
 instructionMemoryLd_EXMEM, instructionMemoryClr_EXMEM, 
@@ -114,6 +115,7 @@ instructionMemory_outD;
 sc_signal<my6bitword> 
 
 instructionMemory_outE, instructionMemory_outF, // opcode, func
+instructionMemory_outE_IDEX,
 ALUop, ula_sel, 
 
 aluOp_IDEX, opCode_IDEX, 

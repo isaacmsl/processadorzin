@@ -8,6 +8,7 @@ SC_MODULE(mypc) {
 
     void m() {
         q.write(d);
+        //std::cout << d << " pc\n";
     }
 
     SC_CTOR(mypc): clk("CLK") {

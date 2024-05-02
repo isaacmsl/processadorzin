@@ -3,6 +3,7 @@
 #include "../global.h"
 
 #include "../components/memory.h"
+#include "../components/adder.h"
 #include "../components/mux.h"
 #include "../components/pc.h"
 #include "../components/instructionspliter.h"
@@ -19,10 +20,12 @@ SC_MODULE(myIFID) {
 
     mymux<myword> pcMux{"pcMux"};
     mypc pc{"pc"};
+    myadder AdderLeft{"AdderLeft"};
     mymemory<1> InstructionMemory{"InstructionMemory"};
     myregister<myword> PC_IFID{"PC_IFID"};
     myregister<myword> Instruction_IFID{"Instruction_IFID"};
     myinstructionspliter InstructionSpliter{"InstructionSpliter"};
+    sc_signal<bool> left_co;
 
     SC_CTOR(myIFID) {
 
@@ -30,14 +33,19 @@ SC_MODULE(myIFID) {
 
         pcMux.sel(PCSrc_);
         pcMux.in1(adderLeft_out);
-        pcMux.in2(adderRight_out);
+        pcMux.in2(adderRight_EXMEM);
         pcMux.S(pcMux_out);
 
         pc.d(pcMux_out);
         pc.q(pc_out);
         pc.clk(myclock);
-
+    
         address_displacement.write(myword(1));
+
+        AdderLeft.A(pc_out);
+        AdderLeft.B(address_displacement);
+        AdderLeft.S(adderLeft_out);
+        AdderLeft.CO(left_co);
 
         InstructionMemory.read(instMemRead);
         InstructionMemory.write(instMemWrite);

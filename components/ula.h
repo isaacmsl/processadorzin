@@ -32,10 +32,6 @@ SC_MODULE (myula) {
   
   void alu () {
 
-    if (clock.read() == 0) {
-        return;
-    }
-
     int alu_in1_int = word_to_int(alu_in1.read());
     int alu_in2_int = word_to_int(alu_in2.read());
     short read_ = word_to_int(alu_sel.read());
@@ -47,6 +43,8 @@ SC_MODULE (myula) {
     {
         alu_out.write(alu_in1_int + alu_in2_int);
         c_out.write(0);
+
+        std::cout << "ULAAA!!! SOMA: "  << alu_in1_int + alu_in2_int << "\n";
     }
 
     if(read_ == op_sub)//Resta
@@ -95,29 +93,12 @@ SC_MODULE (myula) {
         alu_out.write(~alu_in2_int);
     }
 
-    /*
-    if (read_ == op_lw)
-    {
-        alu_out.write(alu_in2);
-    }
-
-    if (read_ == op_sw)
-    {
-        alu_out.write(alu_in2);
-    }
-
-    if (read_ == op_beq)
-    {
-        if (alu_in1_int == alu_in2_int) {
-            alu_out.write()
-        }
-    }
-    */
+    std::cout << "ULAAA!!! "  << alu_out << "\n";
     
   }
     
   SC_CTOR(myula) {
         SC_METHOD(alu);
-        sensitive << clock;
+        sensitive << clock << alu_in1 << alu_in2;
     } 
 };

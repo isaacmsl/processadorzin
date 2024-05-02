@@ -32,6 +32,8 @@ SC_MODULE(mon) {
             cout << setw(MYWORD_LENGTH + 1) << myword_out3.read() << " ";
             cout << setw(3 + 1) << bit_out.read() << " ";
             cout << setw(3 + 1) << clk.read() << " " << endl;
+
+            cout << "\n next cicle:\n";
             wait();
         }
     }
