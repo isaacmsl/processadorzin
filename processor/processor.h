@@ -19,12 +19,12 @@ inline void processor() {
 
     mon<myword> Monitor("Monitor");
 	Monitor.clk(myclock);
-    Monitor.myword_out1(data_read2);
-    Monitor.myword_out2(ula_out);
+    Monitor.myword_out1(data_read1);
+    Monitor.myword_out2(ulaMux_out);
     Monitor.my6bit_out(instructionMemory_outF);
     Monitor.myadd_out(RegisterMux_out);
     Monitor.myshortword_out(instructionMemory_outD);
-    Monitor.myword_out3(DataMemoryMux_out);
+    Monitor.myword_out3(ula_out);
     Monitor.bit_out(RegWrite);
     
     //

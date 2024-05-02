@@ -23,7 +23,7 @@ SC_MODULE(myregisterbank) {
             out2.write(bank[ my_to_int<myaddressword>(addr2.read()) % banksize ]);
         }
 
-        std::cout << bank[1] << " A" << '\n';
+        //std::cout << bank[1] << " A" << '\n';
     }
 
     SC_CTOR(myregisterbank): clk("CLK") {
