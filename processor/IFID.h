@@ -64,7 +64,7 @@ SC_MODULE(myIFID) {
 
         // splitting instructionMemory_out to A,B,C ...
         InstructionSpliter.instruction(instructionMemory_IFID); // uses from IF/ID buffer
-        InstructionSpliter.instruction2(instructionMemory_IDEX); // uses from ID/EX buffer
+        InstructionSpliter.instruction2(instructionMemory_IFID); // uses from ID/EX buffer  WTF_ISAAC
         InstructionSpliter.instructionMemory_outA(instructionMemory_outA);
         InstructionSpliter.instructionMemory_outB(instructionMemory_outB);
         InstructionSpliter.instructionMemory_outC(instructionMemory_outC);

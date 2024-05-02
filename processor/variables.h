@@ -32,12 +32,16 @@ opCodeLd_IDEX, opCodeClr_IDEX,
 regWriteLd_IDEX, regWriteClr_IDEX, regWrite_IDEX,
 memToRegLd_IDEX, memToRegClr_IDEX, memToReg_IDEX,
 
+instructionMemory_outBLd_IDEX, instructionMemory_outBClr_IDEX,
+instructionMemory_outCLd_IDEX, instructionMemory_outCClr_IDEX,
+
 // ----------- EX/MEM -----------
 instructionMemoryLd_EXMEM, instructionMemoryClr_EXMEM, 
 adderRightLd_EXMEM, adderRighClr_EXMEM, 
 ulaResultLd_EXMEM, ulaResultClr_EXMEM,
 zeroLd_EXMEM, zeroClr_EXMEM,
 dataRead2Ld_EXMEM, dataRead2Clr_EXMEM,
+registerMuxLd_EXMEM, registerMuxClr_EXMEM,
 
 RegDest_EXMEM,
 memRead_EXMEM, memWrite_EXMEM, memReadLd_EXMEM, memReadClr_EXMEM, memWriteLd_EXMEM, memWriteClr_EXMEM,
@@ -49,8 +53,9 @@ memToReg_EXMEM, memToRegLd_EXMEM, memToRegClr_EXMEM,
 ulaResultLd_MEMWB, ulaResultClr_MEMWB,
 memoryReadLd_MEMWB, memoryReadClr_MEMWB,
 instructionMemoryLd_MEMWB, instructionMemoryClr_MEMWB,
-regWrite_MEMWB, memToReg_MEMWB, RegDest_MEMWB, memRead_MEMWB, memWrite_MEMWB, opCode_MEMWB,
-regWriteLd_MEMWB, regWriteClr_MEMWB, memToRegLd_MEMWB, memToRegClr_MEMWB;
+regWrite_MEMWB, memToReg_MEMWB, memRead_MEMWB, memWrite_MEMWB, opCode_MEMWB,
+regWriteLd_MEMWB, regWriteClr_MEMWB, memToRegLd_MEMWB, memToRegClr_MEMWB,
+registerMuxLd_MEMWB, registerMuxClr_MEMWB;
 
 //
 // ---------------------- MYWORD ----------------------
@@ -90,8 +95,9 @@ memoryRead_MEMWB, instructionMemory_MEMWB;
 
 sc_signal<myaddressword> 
 
-RegisterMux_out,
-instructionMemory_outA, instructionMemory_outB, instructionMemory_outC;
+RegisterMux_out, RegisterMux_out_EXMEM, RegisterMux_out_MEMWB,
+instructionMemory_outA, instructionMemory_outB, instructionMemory_outC,
+instructionMemory_outB_IDEX, instructionMemory_outC_IDEX;
 
 //
 // ---------------------- MYSHORTWORD ----------------------

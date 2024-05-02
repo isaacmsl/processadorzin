@@ -32,6 +32,8 @@ SC_MODULE(myIDEX) {
     myregister<bool> MemToReg_IDEX{"MemToReg_IDEX"};
     myregister<bool> RegWrite_IDEX{"RegWrite_IDEX"};
     myregister<my6bitword> OpCode_IDEX{"OpCode_IDEX"};
+    myregister<myaddressword> InstructionMemory_outB_IDEX{"InstructionMemory_outB_IDEX"};
+    myregister<myaddressword> InstructionMemory_outC_IDEX{"InstructionMemory_outC_IDEX"};
 
     SC_CTOR(myIDEX) {
 
@@ -52,7 +54,7 @@ SC_MODULE(myIDEX) {
         Registers.data(DataMemoryMux_out);
         Registers.addr1(instructionMemory_outA);
         Registers.addr2(instructionMemory_outB);
-        Registers.addr_write(RegisterMux_out);
+        Registers.addr_write(RegisterMux_out_MEMWB);
         Registers.out1(data_read1);
         Registers.out2(data_read2);
         Registers.clk(myclock);
@@ -83,6 +85,20 @@ SC_MODULE(myIDEX) {
         RegDest_IDEX.d(RegDst);
         RegDest_IDEX.q(regDest_IDEX); // TODO: where use?
 
+        // RegWrite buffer ID/EX
+        RegWrite_IDEX.clk(myclock);
+        RegWrite_IDEX.ld(regWriteLd_IDEX); // TODO: when CLK = 0
+        RegWrite_IDEX.clr(regWriteClr_IDEX); // TODO: when?
+        RegWrite_IDEX.d(RegWrite);
+        RegWrite_IDEX.q(regWrite_IDEX); // TODO: where use?
+
+        // MemToReg buffer ID/EX
+        MemToReg_IDEX.clk(myclock);
+        MemToReg_IDEX.ld(memToRegLd_IDEX); // TODO: when CLK = 0
+        MemToReg_IDEX.clr(memToRegClr_IDEX); // TODO: when?
+        MemToReg_IDEX.d(MemToReg);
+        MemToReg_IDEX.q(memToReg_IDEX); // TODO: where use?
+
         // MemRead buffer ID/EX
         MemRead_IDEX.clk(myclock);
         MemRead_IDEX.ld(memReadLd_IDEX); // TODO: when CLK = 0
@@ -103,20 +119,6 @@ SC_MODULE(myIDEX) {
         OpCode_IDEX.clr(opCodeClr_IDEX); // TODO: when?
         OpCode_IDEX.d(instructionMemory_outF);
         OpCode_IDEX.q(opCode_IDEX); // TODO: where use?
-
-        // RegWrite buffer ID/EX
-        RegWrite_IDEX.clk(myclock);
-        RegWrite_IDEX.ld(regWriteLd_IDEX); // TODO: when CLK = 0
-        RegWrite_IDEX.clr(regWriteClr_IDEX); // TODO: when?
-        RegWrite_IDEX.d(RegWrite);
-        RegWrite_IDEX.q(regWrite_IDEX); // TODO: where use?
-
-        // MemToReg buffer ID/EX
-        MemToReg_IDEX.clk(myclock);
-        MemToReg_IDEX.ld(memToRegLd_IDEX); // TODO: when CLK = 0
-        MemToReg_IDEX.clr(memToRegClr_IDEX); // TODO: when?
-        MemToReg_IDEX.d(MemToReg);
-        MemToReg_IDEX.q(memToReg_IDEX); // TODO: where use?
 
         // incremented pc buffer ID/EX
         PC_IDEX.clk(myclock);
@@ -152,6 +154,20 @@ SC_MODULE(myIDEX) {
         SignalExtend_IDEX.clr(signalExtendClr_IDEX); // TODO: when?
         SignalExtend_IDEX.d(signExtend_out);
         SignalExtend_IDEX.q(signalExtend_IDEX);
+
+        // Intructions B buffer ID/EX
+        InstructionMemory_outB_IDEX.clk(myclock);
+        InstructionMemory_outB_IDEX.ld(instructionMemory_outBLd_IDEX);
+        InstructionMemory_outB_IDEX.clr(instructionMemory_outBClr_IDEX);
+        InstructionMemory_outB_IDEX.d(instructionMemory_outB);
+        InstructionMemory_outB_IDEX.q(instructionMemory_outB_IDEX);
+
+        // Intructions C buffer ID/EX
+        InstructionMemory_outC_IDEX.clk(myclock);
+        InstructionMemory_outC_IDEX.ld(instructionMemory_outCLd_IDEX);
+        InstructionMemory_outC_IDEX.clr(instructionMemory_outCClr_IDEX);
+        InstructionMemory_outC_IDEX.d(instructionMemory_outC);
+        InstructionMemory_outC_IDEX.q(instructionMemory_outC_IDEX);
 
     }
 };

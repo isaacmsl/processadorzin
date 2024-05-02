@@ -28,6 +28,7 @@ SC_MODULE(myEXMEM) {
     myregister<my6bitword> OpCode_EXMEM{"OpCode_EXMEM"};
     myregister<bool> MemWrite_EXMEM{"MemWrite_EXMEM"};
     myregister<bool> MemRead_EXMEM{"MemRead_EXMEM"};
+    myregister<myaddressword> RegisterMux_EXMEM{"RegisterMux_EXMEM"};
     myadder adderRight{"adderRight"};
     myshifter<0, false> BitShifter{"BitShifter"};
     myula Ula{"Ula"};
@@ -49,8 +50,8 @@ SC_MODULE(myEXMEM) {
         UlaControl.S(ula_sel);
 
         RegisterMux.sel(regDest_IDEX);
-        RegisterMux.in1(instructionMemory_outC);
-        RegisterMux.in2(instructionMemory_outB);
+        RegisterMux.in1(instructionMemory_outB_IDEX);
+        RegisterMux.in2(instructionMemory_outC_IDEX);
         RegisterMux.S(RegisterMux_out);
 
         Ula.alu_in1(dataRead1_IDEX);
@@ -94,7 +95,7 @@ SC_MODULE(myEXMEM) {
         RegWrite_EXMEM.clk(myclock);
         RegWrite_EXMEM.ld(regWriteLd_EXMEM); // TODO: when CLK = 0
         RegWrite_EXMEM.clr(regWriteClr_EXMEM); // TODO: when?
-        RegWrite_EXMEM.d(regDest_IDEX);
+        RegWrite_EXMEM.d(regWrite_IDEX);
         RegWrite_EXMEM.q(regWrite_EXMEM); // TODO: where use?
 
         // MemToReg buffer EX/MEM
@@ -141,6 +142,13 @@ SC_MODULE(myEXMEM) {
         DataRead2_EXMEM.clr(dataRead2Clr_EXMEM); // TODO: when?
         DataRead2_EXMEM.d(dataRead2_IDEX);
         DataRead2_EXMEM.q(dataRead2_EXMEM);
+
+        // RegisterMu buffer EX/MEM
+        RegisterMux_EXMEM.clk(myclock);
+        RegisterMux_EXMEM.ld(registerMuxLd_EXMEM);
+        RegisterMux_EXMEM.clr(registerMuxClr_EXMEM);
+        RegisterMux_EXMEM.d(RegisterMux_out);
+        RegisterMux_EXMEM.q(RegisterMux_out_EXMEM);
 
     }
 };

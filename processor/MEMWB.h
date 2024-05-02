@@ -21,6 +21,7 @@ SC_MODULE(myMEMWB) {
     myregister<myword> Instruction_MEMWB{"Instruction_MEMWB"};
     myregister<bool> MemToReg_MEMWB{"MemToReg_MEMWB"};
     myregister<bool> RegWrite_MEMWB{"RegWrite_MEMWB"};
+    myregister<myaddressword> RegisterMux_MEMWB{"RegisterMux_MEMWB"};
     mymemory<0> DataMemory{"DataMemory"};
     myprePCSrc prePCSrc{"PCScrc"};
 
@@ -45,7 +46,7 @@ SC_MODULE(myMEMWB) {
         RegWrite_MEMWB.clk(myclock);
         RegWrite_MEMWB.ld(regWriteLd_MEMWB); // TODO: when CLK = 0
         RegWrite_MEMWB.clr(regWriteClr_MEMWB); // TODO: when?
-        RegWrite_MEMWB.d(RegDest_EXMEM);
+        RegWrite_MEMWB.d(regWrite_IDEX);
         RegWrite_MEMWB.q(regWrite_MEMWB); // TODO: where use?
 
         // MemToReg buffer EX/MEM
@@ -75,6 +76,14 @@ SC_MODULE(myMEMWB) {
         UlaResult_MEMWB.clr(ulaResultClr_MEMWB); // TODO: when?
         UlaResult_MEMWB.d(ulaResult_EXMEM);
         UlaResult_MEMWB.q(ulaResult_MEMWB);
+
+
+        // RegisterMux buffer MEM/WB
+        RegisterMux_MEMWB.clk(myclock);
+        RegisterMux_MEMWB.ld(registerMuxLd_MEMWB);
+        RegisterMux_MEMWB.clr(registerMuxClr_MEMWB);
+        RegisterMux_MEMWB.d(RegisterMux_out_EXMEM);
+        RegisterMux_MEMWB.q(RegisterMux_out_MEMWB);
 
         // --------------- FINAL sector ---------------
 
