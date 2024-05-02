@@ -2,56 +2,77 @@
 #include "../global.h"
 
 SC_MODULE(mycontrol) {
-    sc_in<bool> zero;
-    sc_in<my6bitword> opcode;
+    sc_in<bool> clk, clr;
+    sc_in<my6bitword> opcode, funct;
     sc_out<bool> RegWrite, RegDst, ALUSrc, MemWrite, MemRead, MemToReg, PCSrc;
     sc_out<my6bitword> ALUop;
 
-    void m() {
-        // Reseting signals
-        RegWrite.write(0);
-        RegDst.write(0);
-        ALUSrc.write(0);
-        MemWrite.write(0);
-        MemRead.write(0);
-        MemToReg.write(0);
-        PCSrc.write(0);
 
-        int opcode_int = word_to_int(opcode.read());
-        ALUop.write(opcode_int);
-        
-        switch(opcode_int) {
+    void n() {
+        typedef enum {S0=0, S1=1, S2=2} state_e;
+        state_e state = S0;
 
-            case op_add: ALUSrc.write(1);break;
+        while(true) {
+            if(clr.read() == false) {
+                switch(state) {
+                    case S0: // initializing processor
+                        // Reseting signals
+                        RegWrite.write(0);
+                        RegDst.write(0);
+                        ALUSrc.write(0);
+                        MemWrite.write(0);
+                        MemRead.write(0);
+                        MemToReg.write(0);
+                        PCSrc.write(0);
 
-            case op_sub: ALUSrc.write(1);break;
+                        state = S1;
+                        break;
+                    case S1: // processing next instruction
+                        int opcode_int = word_to_int(opcode.read());
+                        ALUop.write(opcode_int);
+                        
+                        
+                        switch(opcode_int) {
 
-            case op_mult: ALUSrc.write(1);break;
+                            case op_add: ALUSrc.write(1);break;
 
-            case op_div: ALUSrc.write(1);break;
+                            case op_sub: ALUSrc.write(1);break;
 
-            case op_and: ALUSrc.write(1);break;
+                            case op_mult: ALUSrc.write(1);break;
 
-            case op_or: ALUSrc.write(1);break;
+                            case op_div: ALUSrc.write(1);break;
 
-            case op_xor: ALUSrc.write(1);break;
+                            case op_and: ALUSrc.write(1);break;
 
-            case op_shiftleft: ALUSrc.write(1);break;
+                            case op_or: ALUSrc.write(1);break;
 
-            case op_shiftright: ALUSrc.write(1);break;
+                            case op_xor: ALUSrc.write(1);break;
 
-            case op_negate: ALUSrc.write(1);break;
+                            case op_shiftleft: ALUSrc.write(1);break;
 
-            case op_ld: ALUop.write(op_add);ALUSrc.write(1);MemRead.write(1);RegWrite.write(1);MemToReg.write(1);break;
+                            case op_shiftright: ALUSrc.write(1);break;
 
-            case op_st: ALUop.write(op_add);ALUSrc.write(1);MemWrite.write(1);break;
+                            case op_negate: ALUSrc.write(1);break;
 
-            case op_j: PCSrc.write(1);break;
+                            case op_ld: ALUop.write(op_add);ALUSrc.write(1);MemRead.write(1);RegWrite.write(1);MemToReg.write(1);break;
 
-            case op_jn: ALUop.write(op_sub);break;
+                            case op_st: ALUop.write(op_add);ALUSrc.write(1);MemWrite.write(1);break;
 
-            case op_jz: ALUop.write(op_sub);break;
+                            case op_j: PCSrc.write(1);break;
 
+                            case op_jn: ALUop.write(op_sub);break;
+
+                            case op_jz: ALUop.write(op_sub);break;
+
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }        
+            else
+                state = S0;
+            wait();
         }
 
         // writting into registers
@@ -63,7 +84,7 @@ SC_MODULE(mycontrol) {
     }
 
     SC_CTOR(mycontrol) {
-        SC_METHOD(m);
-		sensitive << opcode << zero;
+        SC_THREAD(n);
+		sensitive << clk.pos();
     }
 };
