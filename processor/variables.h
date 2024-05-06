@@ -116,7 +116,7 @@ sc_signal<my6bitword>
 
 instructionMemory_outE, instructionMemory_outF, // opcode, func
 instructionMemory_outE_IDEX,
-ALUop, ula_sel, 
+ALUop, 
 
 aluOp_IDEX, opCode_IDEX, 
 opCode_EXMEM,

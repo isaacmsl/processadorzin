@@ -33,7 +33,6 @@ SC_MODULE(myEXMEM) {
     myshifter<0, false> BitShifter{"BitShifter"};
     myula Ula{"Ula"};
     mymux<myaddressword> RegisterMux{"RegisterMux"};
-    myulacontrol UlaControl{"UlaControl"};
     mymux<myword> UlaMux{"UlaMux"};
     sc_signal<bool> right_co;
 
@@ -45,10 +44,6 @@ SC_MODULE(myEXMEM) {
         UlaMux.in2(signalExtend_IDEX);
         UlaMux.S(ulaMux_out);
 
-        UlaControl.f(instructionMemory_outE_IDEX);
-        UlaControl.op(aluOp_IDEX);
-        UlaControl.S(ula_sel); // Não está devolvendo o ula_sel correto antes da ula precisar dele
-
         RegisterMux.sel(regDest_IDEX);
         RegisterMux.in1(instructionMemory_outB_IDEX);
         RegisterMux.in2(instructionMemory_outC_IDEX);
@@ -56,7 +51,7 @@ SC_MODULE(myEXMEM) {
 
         Ula.alu_in1(dataRead1_IDEX);
         Ula.alu_in2(ulaMux_out);
-        Ula.alu_sel(instructionMemory_outE_IDEX); // GAMBIARRA WARNING
+        Ula.alu_sel(aluOp_IDEX);
         Ula.alu_out(ula_out);
         Ula.zero_out(ula_zero);
         Ula.c_out(ula_carry);
