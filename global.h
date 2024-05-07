@@ -1,6 +1,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 #include "systemc.h"
+#include <vector>
 
 const int MYWORD_LENGTH = 32;
 const int MYSHORTWORD_LENGTH = 16;
@@ -10,6 +11,7 @@ using myword = sc_bv<MYWORD_LENGTH>;
 using myshortword = sc_bv<MYSHORTWORD_LENGTH>;
 using my6bitword = sc_bv<6>;
 using myaddressword = sc_bv<MYADDRESSWORD_LENGTH>;
+//using mychangecheckword = sc_bv<8 + MYWORD_LENGTH * 2>;
 
 enum opcodes {
     unit,
@@ -52,6 +54,28 @@ int my_to_int(T my_addr) {
 
     return addr_as_int;
 }
+
+/*
+template<typename T>
+mychangecheckword to_change_check(std::vector<bool> b_list, std::vector<T> t_list) {
+    mychangecheckword a;
+
+    // coding b_list into the first 8 bits
+    for (int i{0};i < std::min(8, (int)b_list.size());i ++) {
+        a.set_bit(i, b_list[i]);
+    }
+
+    // coding t_list into the last 64 bits
+    for (int i{0};i < std::min(2, (int)t_list.size());i ++) {
+        int l = t_list[i].length();
+        for (int j{0};j < l;j++) {
+            a.set_bit(8 + i * MYADDRESSWORD_LENGTH + j, t_list[i].get_bit(j));
+        }
+    }
+
+    return a;
+}
+*/
 
 // 32 0's  00000000000000000000000000000000
 

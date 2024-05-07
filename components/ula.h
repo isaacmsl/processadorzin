@@ -92,13 +92,12 @@ SC_MODULE (myula) {
     {	
         alu_out.write(~alu_in2_int);
     }
-
-    std::cout << "ULAAA!!! "  << alu_out << "\n";
+    std::cout << "ULAAA!!! "  << alu_in1 << " " << alu_in2 << " " << alu_out << "\n";
     
   }
     
   SC_CTOR(myula) {
         SC_METHOD(alu);
-        sensitive << clock << alu_in1 << alu_in2;
+        sensitive << alu_in1 << alu_in2;
     } 
 };

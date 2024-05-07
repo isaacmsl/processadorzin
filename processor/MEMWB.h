@@ -91,6 +91,7 @@ SC_MODULE(myMEMWB) {
         DataMemoryMux.in1(memoryRead_MEMWB);
         DataMemoryMux.in2(ulaResult_MEMWB);
         DataMemoryMux.S(DataMemoryMux_out);
+        DataMemoryMux.clk(myclock);
 
     }
 };

@@ -35,6 +35,7 @@ SC_MODULE(myIFID) {
         pcMux.in1(adderLeft_out);
         pcMux.in2(adderRight_EXMEM);
         pcMux.S(pcMux_out);
+        pcMux.clk(myclock);
 
         pc.d(pcMux_out);
         pc.q(pc_out);

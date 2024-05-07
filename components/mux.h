@@ -6,18 +6,22 @@
 
 template<typename T>
 SC_MODULE(mymux) {
-    sc_in<bool> sel;
+    sc_in<bool> sel, clk;
     sc_in<T> in1, in2;
     sc_out<T> S;
 
     void m() {
         S.write(sel.read() ? in2 : in1);
+
+        std::cout << "MUX: " << sel.read() << " " << in2 << " " << in1 << " out: "  << S.read() << '\n';
     }
 
     SC_CTOR(mymux) {
         SC_METHOD(m);
-		sensitive << sel << in1 << in2;
+		sensitive << in2 << in1 << sel;
     }
 };
 
+
+// transformar UlaMux e Ula em um componente só??
 #endif

@@ -43,11 +43,13 @@ SC_MODULE(myEXMEM) {
         UlaMux.in1(dataRead2_IDEX);
         UlaMux.in2(signalExtend_IDEX);
         UlaMux.S(ulaMux_out);
+        UlaMux.clk(myclock);
 
         RegisterMux.sel(regDest_IDEX);
         RegisterMux.in1(instructionMemory_outB_IDEX);
         RegisterMux.in2(instructionMemory_outC_IDEX);
         RegisterMux.S(RegisterMux_out);
+        RegisterMux.clk(myclock);
 
         Ula.alu_in1(dataRead1_IDEX);
         Ula.alu_in2(ulaMux_out);
