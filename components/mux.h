@@ -12,8 +12,6 @@ SC_MODULE(mymux) {
 
     void m() {
         S.write(sel.read() ? in2 : in1);
-
-        std::cout << "MUX: " << sel.read() << " " << in2 << " " << in1 << " out: "  << S.read() << '\n';
     }
 
     SC_CTOR(mymux) {
