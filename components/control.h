@@ -105,7 +105,16 @@ SC_MODULE(mycontrol) {
                             RegWrite.write(0);      // não vai escrever no registrador
                             break;
 
-                            case op_j: PCSrc.write(1);break;
+                            case op_j:
+                            RegWrite.write(0);
+                            RegDst.write(0);
+                            ALUSrc.write(0);
+                            MemWrite.write(0);
+                            MemRead.write(0);
+                            MemToReg.write(0);
+                            PCSrc.write(1);
+                            ALUop.write(op_sub);
+                            break;
 
                             case op_jn: ALUop.write(op_sub);break;
 
