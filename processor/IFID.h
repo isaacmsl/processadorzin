@@ -41,7 +41,9 @@ SC_MODULE(myIFID) {
         pc.q(pc_out);
         pc.clk(myclock);
     
-        address_displacement.write(myword(1));
+        address_displacement.write(1);
+        pc_out.write(1);
+        pcMux_out.write(1);
 
         AdderLeft.A(pc_out);
         AdderLeft.B(address_displacement);
@@ -56,6 +58,8 @@ SC_MODULE(myIFID) {
         InstructionMemory.clk(myclock);
 
         load_instructions(InstructionMemory, "-");
+
+        instructionMemory_out.write(InstructionMemory.ram_array[0]);
 
         // incremented pc buffer IF/ID
         PC_IFID.clk(myclock);

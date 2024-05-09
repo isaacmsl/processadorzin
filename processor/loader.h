@@ -19,10 +19,24 @@ void load_instructions(mymemory<clock_int>& InstructionMemory, std::string file)
     //InstructionMemory.ram_array[0] = "00101100000001000000000001010101";
     //InstructionMemory.ram_array[1] = "00101000000000010000000001010101";
 
+    /*
     InstructionMemory.ram_array[0] = "00000100001000100000000000000001"; // write r[1] + 1 in r[2]
     InstructionMemory.ram_array[1] = "00000100010000100000000000000001"; // write r[2] + 1 in r[2]
     InstructionMemory.ram_array[2] = "00000100010000100000000000000001"; // write r[2] + 1 in r[2]
     InstructionMemory.ram_array[3] = "00000100010000100000000000000001"; // write r[2] + 1 in r[2]
+    */
+
+    int i = 0;
+    InstructionMemory.ram_array[i++] = "00000100001000100000000000000001"; // write r[1] + 1 in r[2]
+    InstructionMemory.ram_array[i++] = "00000000000000000000000000000000"; // nada
+    InstructionMemory.ram_array[i++] = "00000001110000000000000000000000"; // nada2
+    InstructionMemory.ram_array[i++] = "00000100010000110000000000000001"; // write r[2] + 1 in r[3]
+    InstructionMemory.ram_array[i++] = "00000000000000000000000000000000"; // nada
+    InstructionMemory.ram_array[i++] = "00000001110000000000000000000000"; // nada2
+    InstructionMemory.ram_array[i++] = "00000100011001000000000000000001"; // write r[3] + 1 in r[4]
+    InstructionMemory.ram_array[i++] = "00000000000000000000000000000000"; // nada
+    InstructionMemory.ram_array[i++] = "00000001110000000000000000000000"; // nada2
+    InstructionMemory.ram_array[i++] = "00000100100001010000000000000001"; // write r[4] + 1 in r[5]
 
     // msd -> lsd
     //                                000000 00000 00000 00000 00000 000000

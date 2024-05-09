@@ -10,7 +10,8 @@ SC_MODULE(mycontrol) {
 
     void n() {
         typedef enum {S0=0, S1=1, S2=2} state_e;
-        state_e state = S0;
+        state_e state = S1;
+        state_e new_state = state;
 
         while(true) {
             if(clr.read() == false) {
@@ -25,12 +26,14 @@ SC_MODULE(mycontrol) {
                         MemToReg.write(0);
                         PCSrc.write(0);
 
-                        state = S1;
+                        new_state = S1;
+                        std::cout << "S0 " << clk.read() << "\n";
                     break;
+
                     case S1: // processing next instruction
+
                         int opcode_int = word_to_int(opcode.read());
                         ALUop.write(opcode_int);
-                        
                         
                         switch(opcode_int) {
 
@@ -83,13 +86,19 @@ SC_MODULE(mycontrol) {
                             case op_jz: ALUop.write(op_sub);break;
 
                         }
+
+                        new_state = S1;
+                        std::cout << "S1 " << clk.read() << " " << opcode.read() << "\n";
                     break;
                 }
             }        
             else {
-                state = S0;
+                new_state = S1;
             }
+            
+            std::cout << "S------\n";
             wait();
+            state = new_state;
         }
 
         // writting into registers

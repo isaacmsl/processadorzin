@@ -23,6 +23,7 @@ SC_MODULE(mon_mux) {
             cout << setw(MYWORD_LENGTH) << S.read() << " ";
             cout << setw(MYWORD_LENGTH + 2) << sel.read() << " ";
             cout << setw(MYWORD_LENGTH + 2) << clk.read() << " " << endl;
+            cout << "---\n";
             wait();
         }
     }

@@ -17,9 +17,11 @@ SC_MODULE(myregisterbank) {
     void m() {
         if (write.read() == 1) { // clk.read() == 0
             bank[ my_to_int<myaddressword>(addr_write.read()) % banksize ] = data.read();
+
+            std::cout << "REG WRITE!!! " << my_to_int<myaddressword>(addr_write.read()) % banksize << " " << data.read() << '\n';
         } else {
 
-            std::cout << bank[ my_to_int<myaddressword>(addr1.read()) % banksize ] << '\n';
+            //std::cout << "REG READ!!! "<< bank[ my_to_int<myaddressword>(addr1.read()) % banksize ] << '\n';
 
             out1.write(bank[ my_to_int<myaddressword>(addr1.read()) % banksize ]);
             out2.write(bank[ my_to_int<myaddressword>(addr2.read()) % banksize ]);
@@ -27,6 +29,9 @@ SC_MODULE(myregisterbank) {
 
         std::cout << bank[1] << " Registers[1]" <<'\n';
         std::cout << bank[2] << " Registers[2]" << '\n';
+        std::cout << bank[3] << " Registers[3]" << '\n';
+        std::cout << bank[4] << " Registers[4]" << '\n';
+        std::cout << bank[5] << " Registers[5]" << '\n';
     }
 
     SC_CTOR(myregisterbank): clk("CLK") {
