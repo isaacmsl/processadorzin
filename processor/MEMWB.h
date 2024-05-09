@@ -46,7 +46,7 @@ SC_MODULE(myMEMWB) {
         RegWrite_MEMWB.clk(myclock);
         RegWrite_MEMWB.ld(regWriteLd_MEMWB); // TODO: when CLK = 0
         RegWrite_MEMWB.clr(regWriteClr_MEMWB); // TODO: when?
-        RegWrite_MEMWB.d(regWrite_IDEX);
+        RegWrite_MEMWB.d(regWrite_EXMEM);
         RegWrite_MEMWB.q(regWrite_MEMWB); // TODO: where use?
 
         // MemToReg buffer EX/MEM
