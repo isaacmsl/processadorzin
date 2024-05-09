@@ -31,7 +31,7 @@ SC_MODULE(myIFID) {
 
         instMemRead.write(1);
 
-        pcMux.sel(PCSrc_);
+        pcMux.sel(PCSrc_outMEMWB);
         pcMux.in1(adderLeft_out);
         pcMux.in2(adderRight_EXMEM);
         pcMux.S(pcMux_out);

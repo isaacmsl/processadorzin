@@ -15,7 +15,7 @@ sc_clock myclock("clk", 1, SC_SEC, 0.5, 0, SC_SEC, false);
 sc_signal<bool>
 
 ula_zero, ula_carry,
-MemRead, MemWrite, MemToReg, RegDst, ALUSrc, RegWrite, Clr, PCSrc, PCSrc_, instMemWrite, instMemRead,
+MemRead, MemWrite, MemToReg, RegDst, ALUSrc, RegWrite, Clr, PCSrc, PCSrc_outMEMWB, instMemWrite, instMemRead,
 
 // ----------- IF/ID -----------
 pcLd_IFID, pcClr_IFID, instructionMemoryLd_IFID, instructionMemoryClr_IFID,
@@ -31,10 +31,12 @@ memWriteLd_IDEX, memWriteClr_IDEX, memReadLd_IDEX, memReadClr_IDEX, memRead_IDEX
 opCodeLd_IDEX, opCodeClr_IDEX,
 regWriteLd_IDEX, regWriteClr_IDEX, regWrite_IDEX,
 memToRegLd_IDEX, memToRegClr_IDEX, memToReg_IDEX,
+pCSrc_IDEX, PCSrcLd_IDEX, PCSrcClr_IDEX,
 
 instructionMemory_outBLd_IDEX, instructionMemory_outBClr_IDEX,
 instructionMemory_outCLd_IDEX, instructionMemory_outCClr_IDEX,
 instructionMemory_outELd_IDEX, instructionMemory_outEClr_IDEX,
+
 
 // ----------- EX/MEM -----------
 instructionMemoryLd_EXMEM, instructionMemoryClr_EXMEM, 
@@ -43,12 +45,14 @@ ulaResultLd_EXMEM, ulaResultClr_EXMEM,
 zeroLd_EXMEM, zeroClr_EXMEM,
 dataRead2Ld_EXMEM, dataRead2Clr_EXMEM,
 registerMuxLd_EXMEM, registerMuxClr_EXMEM,
+ulaZero_EXMEM,
 
 RegDest_EXMEM,
 memRead_EXMEM, memWrite_EXMEM, memReadLd_EXMEM, memReadClr_EXMEM, memWriteLd_EXMEM, memWriteClr_EXMEM,
 opCodeLd_EXMEM, opCodeClr_EXMEM,
 regWriteLd_EXMEM, regWriteClr_EXMEM, regWrite_EXMEM,
 memToReg_EXMEM, memToRegLd_EXMEM, memToRegClr_EXMEM,
+pCSrc_EXMEM, PCSrcLd_EXMEM, PCSrcClr_EXMEM,
 
 // ----------- MEM/WB -----------
 ulaResultLd_MEMWB, ulaResultClr_MEMWB,

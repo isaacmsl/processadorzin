@@ -26,7 +26,7 @@ SC_MODULE (myula) {
   sc_in<my6bitword>   alu_sel;
                  
   sc_out<myword>  alu_out;
-  sc_out<bool>   c_out;
+  sc_out<bool>   c_out; //caryy_out
   sc_out<bool>   zero_out;
   sc_in_clk      clock;
   
@@ -37,7 +37,7 @@ SC_MODULE (myula) {
     short read_ = word_to_int(alu_sel.read());
 
     c_out.write(0);
-    zero_out.write(1);
+    zero_out.write(0);
 
     if(read_ == op_add)//Suma
     {
@@ -50,7 +50,7 @@ SC_MODULE (myula) {
     if(read_ == op_sub)//Resta
     {	
         alu_out.write(alu_in1_int - alu_in2_int);
-        zero_out.write((alu_in1_int - alu_in2_int) == 0 ? 0 : 1);
+        zero_out.write((alu_in1_int - alu_in2_int) == 0 ? 1 : 0);
     }
 
     if(read_ == op_mult)//Multiplicacion
@@ -96,6 +96,6 @@ SC_MODULE (myula) {
     
   SC_CTOR(myula) {
         SC_METHOD(alu);
-        sensitive << alu_in1 << alu_in2;
+        sensitive << alu_in1 << alu_in2 << alu_sel;
     } 
 };

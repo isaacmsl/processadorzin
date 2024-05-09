@@ -18,8 +18,6 @@ SC_MODULE(myEXMEM) {
     sc_in<bool> myclock;
 
     myregister<myword> DataRead2_EXMEM{"DataRead2_EXMEM"};
-    myregister<myword> Zero_EXMEM{"Zero_EXMEM"};
-    mysigextender<bool, myword> signalExtend0{"signalExtend0"};
     myregister<myword> UlaResult_EXMEM{"UlaResult_EXMEM"};
     myregister<myword> Instruction_EXMEM{"Instruction_EXMEM"};
     myregister<myword> AdderRight_EXMEM{"adderRight_EXMEM"};
@@ -29,12 +27,14 @@ SC_MODULE(myEXMEM) {
     myregister<bool> MemWrite_EXMEM{"MemWrite_EXMEM"};
     myregister<bool> MemRead_EXMEM{"MemRead_EXMEM"};
     myregister<myaddressword> RegisterMux_EXMEM{"RegisterMux_EXMEM"};
+    myregister<bool> PCSrc_EXMEM{"PCSrc_EXMEM"};
     myadder adderRight{"adderRight"};
     myshifter<0, false> BitShifter{"BitShifter"};
     myula Ula{"Ula"};
     mymux<myaddressword> RegisterMux{"RegisterMux"};
     mymux<myword> UlaMux{"UlaMux"};
     sc_signal<bool> right_co;
+    myregister<bool> UlaZero_EXMEM{"UlaZero_EXMEM"};
 
 
     SC_CTOR(myEXMEM) {
@@ -123,16 +123,6 @@ SC_MODULE(myEXMEM) {
         UlaResult_EXMEM.d(ula_out);
         UlaResult_EXMEM.q(ulaResult_EXMEM);
 
-        signalExtend0.A(ula_zero);
-        signalExtend0.S(ula_zero_myword);
-
-        // Zero buffer EX/MEM
-        Zero_EXMEM.clk(myclock);
-        Zero_EXMEM.ld(zeroLd_EXMEM); // TODO: when CLK = 0
-        Zero_EXMEM.clr(zeroClr_EXMEM); // TODO: when?
-        Zero_EXMEM.d(ula_zero_myword);
-        Zero_EXMEM.q(zero_EXMEM);
-
         // data read 2 buffer EX/MEM
         DataRead2_EXMEM.clk(myclock);
         DataRead2_EXMEM.ld(dataRead2Ld_EXMEM); // TODO: when CLK = 0
@@ -140,12 +130,26 @@ SC_MODULE(myEXMEM) {
         DataRead2_EXMEM.d(dataRead2_IDEX);
         DataRead2_EXMEM.q(dataRead2_EXMEM);
 
-        // RegisterMu buffer EX/MEM
+        // RegisterMux buffer EX/MEM
         RegisterMux_EXMEM.clk(myclock);
         RegisterMux_EXMEM.ld(registerMuxLd_EXMEM);
         RegisterMux_EXMEM.clr(registerMuxClr_EXMEM);
         RegisterMux_EXMEM.d(RegisterMux_out);
         RegisterMux_EXMEM.q(RegisterMux_out_EXMEM);
+
+        // PCSrc buffer EX/MEM
+        PCSrc_EXMEM.clk(myclock);
+        PCSrc_EXMEM.ld(PCSrcLd_EXMEM);
+        PCSrc_EXMEM.clr(PCSrcClr_EXMEM);
+        PCSrc_EXMEM.d(pCSrc_IDEX);
+        PCSrc_EXMEM.q(pCSrc_EXMEM);
+
+        // Ula zero buffer EX/MEM
+        UlaZero_EXMEM.clk(myclock);
+        UlaZero_EXMEM.ld(ulaResultLd_EXMEM); // TODO: when CLK = 0
+        UlaZero_EXMEM.clr(ulaResultClr_EXMEM); // TODO: when?
+        UlaZero_EXMEM.d(ula_zero);
+        UlaZero_EXMEM.q(ulaZero_EXMEM);
 
     }
 };

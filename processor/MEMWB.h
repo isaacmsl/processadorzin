@@ -28,10 +28,9 @@ SC_MODULE(myMEMWB) {
 
     SC_CTOR(myMEMWB) {
 
-        prePCSrc.PCSrc(PCSrc);
-        prePCSrc.Ula_out(ula_out);
-        prePCSrc.opcode(opCode_EXMEM);
-        prePCSrc.PCSrc_(PCSrc_);
+        prePCSrc.PCSrc(pCSrc_EXMEM);
+        prePCSrc.UlaZero_out(ulaZero_EXMEM);
+        prePCSrc.PCSrc_out(PCSrc_outMEMWB);
 
         DataMemory.read(memRead_EXMEM);
         DataMemory.write(memWrite_EXMEM);
@@ -76,7 +75,6 @@ SC_MODULE(myMEMWB) {
         UlaResult_MEMWB.clr(ulaResultClr_MEMWB); // TODO: when?
         UlaResult_MEMWB.d(ulaResult_EXMEM);
         UlaResult_MEMWB.q(ulaResult_MEMWB);
-
 
         // RegisterMux buffer MEM/WB
         RegisterMux_MEMWB.clk(myclock);
