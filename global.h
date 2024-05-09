@@ -25,12 +25,12 @@ enum opcodes {
     op_shiftright, // shiftright register1 by 'immediate' (index 8)
     op_shiftleft, // shiftleft register1 by 'immediate' (index 9)
     op_negate, // negate immediate (index 10)
-    op_ula_regs, // add two registers (r1, r2) and writes at a register (w2)
-    op_ld, // load word in memory with address 'immediate + register1' to register2 (index 11)
-    op_st, // store register2 in memory in address 'immediate + register1' (index 12)
-    op_j, // jump 'immediate' instructions (index 13)
-    op_jn, // jump 'immediate' instructions if register1 - register2 < 0 (index 14)
-    op_jz, // jump 'immediate' instructions if register1 - register2 == 0 (index 15)
+    op_ula_regs, // add two registers (r1, r2) and writes at a register (w2) (index 11)
+    op_ld, // load word in memory with address 'immediate + register1' to register2 (index 12)
+    op_st, // store register2 in memory in address 'immediate + register1' (index 13)
+    op_j, // jump 'immediate' instructions (index 14)
+    op_jn, // jump 'immediate' instructions if register1 - register2 < 0 (index 15)
+    op_jz, // jump 'immediate' instructions if register1 - register2 == 0 (index 16)
 };
 
 int word_to_int(myword myword_addr) {
