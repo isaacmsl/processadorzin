@@ -6,6 +6,7 @@ SC_MODULE(mycontrol) {
     sc_in<my6bitword> opcode;
     sc_out<bool> RegWrite, RegDst, ALUSrc, MemWrite, MemRead, MemToReg, PCSrc;
     sc_out<my6bitword> ALUop;
+    sc_in<my6bitword> func;
 
 
     void n() {
@@ -34,8 +35,13 @@ SC_MODULE(mycontrol) {
                         }
 
                         int opcode_int = word_to_int(opcode.read());
-                        ALUop.write(opcode_int);
-                        
+
+                        // Diferencia quando precisamos identificar a operação pelo func
+                        if (opcode_int == op_ula_regs) {
+                            ALUop.write(func);
+                        } else {
+                            ALUop.write(opcode_int);
+                        }
                         
                         switch(opcode_int) {
 
@@ -50,6 +56,7 @@ SC_MODULE(mycontrol) {
                             break;
 
                             case op_add:
+                            case op_mult:
                             RegWrite.write(1);
                             RegDst.write(0);
                             ALUSrc.write(1);
@@ -61,7 +68,6 @@ SC_MODULE(mycontrol) {
 
                             case op_sub: ALUSrc.write(1);break;
 
-                            case op_mult: ALUSrc.write(1);break;
 
                             case op_div: ALUSrc.write(1);break;
 
@@ -76,6 +82,16 @@ SC_MODULE(mycontrol) {
                             case op_shiftright: ALUSrc.write(1);break;
 
                             case op_negate: ALUSrc.write(1);break;
+                            
+                            case op_ula_regs:
+                            RegWrite.write(1);
+                            RegDst.write(1);
+                            ALUSrc.write(0);
+                            MemWrite.write(0);
+                            MemRead.write(0);
+                            MemToReg.write(1);
+                            PCSrc.write(0);
+                            break;
 
                             case op_ld: ALUop.write(op_add);ALUSrc.write(1);MemRead.write(1);RegWrite.write(1);MemToReg.write(1);break;
 
@@ -95,13 +111,13 @@ SC_MODULE(mycontrol) {
                 state = S0;
             }
 
-            std::cout << "S1 " << RegWrite.read() <<
-                            RegDst.read() <<
-                            ALUSrc.read() <<
-                            MemWrite.read() <<
-                            MemRead.read() <<
-                            MemToReg.read() <<
-                            PCSrc.read() << '\n';
+            // std::cout << "S1 " << RegWrite.read() <<
+            //                 RegDst.read() <<
+            //                 ALUSrc.read() <<
+            //                 MemWrite.read() <<
+            //                 MemRead.read() <<
+            //                 MemToReg.read() <<
+            //                 PCSrc.read() << '\n';
 
             wait();
         }
