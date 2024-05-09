@@ -39,6 +39,7 @@ SC_MODULE(myIDEX) {
     SC_CTOR(myIDEX) {
 
         Control.opcode(instructionMemory_outF);
+        Control.func(instructionMemory_outE);
         Control.zero(ula_zero);
         Control.MemWrite(MemWrite);
         Control.MemRead(MemRead);
@@ -169,7 +170,7 @@ SC_MODULE(myIDEX) {
         InstructionMemory_outC_IDEX.clr(instructionMemory_outCClr_IDEX);
         InstructionMemory_outC_IDEX.d(instructionMemory_outC);
         InstructionMemory_outC_IDEX.q(instructionMemory_outC_IDEX);
-
+        // inutil ja que instructionMemory_outE é o func que ja é usado no control
         // Intructions E buffer ID/EX
         InstructionMemory_outE_IDEX.clk(myclock);
         InstructionMemory_outE_IDEX.ld(instructionMemory_outELd_IDEX);
