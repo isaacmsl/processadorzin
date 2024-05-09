@@ -33,6 +33,18 @@ void load_instructions(mymemory<clock_int>& InstructionMemory, std::string file)
     // InstructionMemory.ram_array[3] = "00000000000000000000000000000000"; // nada
     // InstructionMemory.ram_array[4] = "00000100010001000000000000000000"; // write r[2] + 0 in r[4]
 
+    // ST (Escrita na memória)
+    // InstructionMemory.ram_array[0] = "00110100001000100000000000000000"; // memory[r[1] + 0] = r[2]
+    // InstructionMemory.ram_array[1] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[2] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[3] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[4] = "00110000001000110000000000000000"; // r[3] = memory[r[1] + 0] 
+    // InstructionMemory.ram_array[5] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[6] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[7] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[8] = "00000100011001000000000000000000"; // write r[3] + 0 in r[4] (r[3] deve ser igual ao r[2])
+
+
     // msd -> lsd
     //                                000000 00000 00000 00000 00000 000000
     //                                opcode  r1   w1 r2   w2         func
@@ -48,12 +60,15 @@ void load_instructions(mymemory<clock_int>& InstructionMemory, std::string file)
 
 template<int clock_int>
 void load_memory(mymemory<clock_int>& DataMemory, std::string file) {
-    DataMemory.ram_array[1] = "00000000000000000000000000011111";
+    // Escrita na memória de dados (st)
+    // DataMemory.ram_array[1] = "00000000000000000000000000000000";
 }
 
 void load_registers(myregisterbank& RegisterBank, std::string file) {
-
-    RegisterBank.bank[1] = "00000000000000000000000000000001";
+    // Escrita na memória de dados (st)
+    // RegisterBank.bank[1] = "00000000000000000000000000000001";
+    // RegisterBank.bank[2] = "00000000000000000000000000011111";
+    // RegisterBank.bank[3] = "00000000000000000000000000000011";
 }
 
 #endif
