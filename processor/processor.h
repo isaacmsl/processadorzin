@@ -20,12 +20,16 @@ inline void processor() {
     mon<myword> Monitor("Monitor");
 	Monitor.clk(myclock);
     Monitor.myword_out1(data_read1);
-    Monitor.myword_out2(ula_out);
+    Monitor.myshortword_out(instructionMemory_outD); //aka opcode
     Monitor.my6bit_out(instructionMemory_outE_IDEX); //instructionMemory_outF
     Monitor.myadd_out(instructionMemory_outA);//RegisterMux_out_MEMWB
-    Monitor.myshortword_out(instructionMemory_outD); //aka opcode
+    Monitor.myword_out2(ula_out);
     Monitor.myword_out3(dataRead1_IDEX); //DataMemoryMux_out
     Monitor.bit_out(regWrite_MEMWB);
+    Monitor.names = {"dtRead1", "imm", "instE_IDEX", "instA", "ula_out", "dtRead1_IDEX", "regW_MEMWB"};
+    Monitor.regprint_inds = {0, 1, 2, 3, 4};
+    Monitor.datamemory_inds = {};
+    Monitor.instmemory_inds = {0, 1, 2, 3, 4};
     
     //
     // ---------------------- PROCESSOR ----------------------

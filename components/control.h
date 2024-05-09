@@ -45,6 +45,7 @@ SC_MODULE(mycontrol) {
                         
                         switch(opcode_int) {
 
+                            // "Do nothing"
                             case unit:
                             RegWrite.write(0);
                             RegDst.write(0);
@@ -55,8 +56,17 @@ SC_MODULE(mycontrol) {
                             PCSrc.write(0);
                             break;
 
+                            // Ula operations
                             case op_add:
                             case op_mult:
+                            case op_sub:
+                            case op_div:
+                            case op_and:
+                            case op_or:
+                            case op_xor:
+                            case op_shiftleft:
+                            case op_shiftright:
+                            case op_negate:
                             RegWrite.write(1);
                             RegDst.write(0);
                             ALUSrc.write(1);
@@ -65,23 +75,6 @@ SC_MODULE(mycontrol) {
                             MemToReg.write(1);
                             PCSrc.write(0);
                             break;
-
-                            case op_sub: ALUSrc.write(1);break;
-
-
-                            case op_div: ALUSrc.write(1);break;
-
-                            case op_and: ALUSrc.write(1);break;
-
-                            case op_or: ALUSrc.write(1);break;
-
-                            case op_xor: ALUSrc.write(1);break;
-
-                            case op_shiftleft: ALUSrc.write(1);break;
-
-                            case op_shiftright: ALUSrc.write(1);break;
-
-                            case op_negate: ALUSrc.write(1);break;
                             
                             case op_ula_regs:
                             RegWrite.write(1);
