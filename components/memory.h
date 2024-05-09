@@ -4,7 +4,6 @@
 #include "systemc.h"
 #include "../global.h"
 
-template<int clk_type>
 SC_MODULE(mymemory) {
     const static int memSize = 1 << 10;
 
@@ -24,8 +23,6 @@ SC_MODULE(mymemory) {
             // reading
             out.write(ram_array[addr_as_int]);
         }
-
-        //std::cout << ram_array[917504 % memSize] << " M" << '\n';
     }
 
     SC_CTOR(mymemory): clk("CLK") {

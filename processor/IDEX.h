@@ -19,7 +19,7 @@ SC_MODULE(myIDEX) {
     mycontrol Control{"Control"};
     myregister<my6bitword> AluOp_IDEX{"AluOp_IDEX"};
     mysigextender<myshortword, myword> signalExtend{"signalExtend"};
-    myregisterbank Registers{"Registers"};
+    //myregisterbank Registers{"Registers"}; declared in variables.h
     myregister<bool> AluSrc_IDEX{"AluSrc_IDEX"};
     myregister<bool> RegDest_IDEX{"RegDest_IDEX"};
     myregister<bool> MemRead_IDEX{"MemRead_IDEX"};

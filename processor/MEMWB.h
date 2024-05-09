@@ -22,7 +22,7 @@ SC_MODULE(myMEMWB) {
     myregister<bool> MemToReg_MEMWB{"MemToReg_MEMWB"};
     myregister<bool> RegWrite_MEMWB{"RegWrite_MEMWB"};
     myregister<myaddressword> RegisterMux_MEMWB{"RegisterMux_MEMWB"};
-    mymemory<0> DataMemory{"DataMemory"};
+    //mymemory DataMemory{"DataMemory"}; declared in variables.h
     myprePCSrc prePCSrc{"PCScrc"};
 
 

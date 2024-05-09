@@ -122,5 +122,16 @@ aluOp_IDEX, opCode_IDEX,
 opCode_EXMEM,
 aluOp_MEMWB;
 
+//
+// ---------------------- COMPONENTS ----------------------
+//
+
+#include "../components/registerbank.h"
+#include "../components/memory.h"
+
+myregisterbank Registers{"Registers"};
+mymemory InstructionMemory{"InstructionMemory"};
+mymemory DataMemory{"DataMemory"};
+
 
 #endif

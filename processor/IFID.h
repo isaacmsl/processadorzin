@@ -21,7 +21,7 @@ SC_MODULE(myIFID) {
     mymux<myword> pcMux{"pcMux"};
     mypc pc{"pc"};
     myadder AdderLeft{"AdderLeft"};
-    mymemory<1> InstructionMemory{"InstructionMemory"};
+    //mymemory InstructionMemory{"InstructionMemory"}; declared in variables.h
     myregister<myword> PC_IFID{"PC_IFID"};
     myregister<myword> Instruction_IFID{"Instruction_IFID"};
     myinstructionspliter InstructionSpliter{"InstructionSpliter"};

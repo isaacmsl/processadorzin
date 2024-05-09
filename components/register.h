@@ -11,11 +11,14 @@ SC_MODULE(myregister) {
     sc_out<dq_type> q;
 
     void m() {
-        if (false) {//clr.read()
+        /*
+        if (clr.read()) {
             q.write(0);
-        } else if (true) { //l.read()
+        } else if (l.read()) {
             q.write(d);
         }
+        */
+       q.write(d);
     }
 
     SC_CTOR(myregister): clk("CLK") {
