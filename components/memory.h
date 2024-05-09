@@ -15,10 +15,6 @@ SC_MODULE(mymemory) {
 
     void m() {
 
-        if (clk.read() != clk_type) {
-            return;
-        }
-
         // getting addr as int
         int addr_as_int = word_to_int(addr.read())  % (memSize);
         // writting
