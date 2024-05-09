@@ -103,7 +103,14 @@ SC_MODULE(mycontrol) {
                             MemToReg.write(0);      // vem da memória de dados
                             break;
 
-                            case op_st: ALUop.write(op_add);ALUSrc.write(1);MemWrite.write(1);break;
+                            case op_st:
+                            PCSrc.write(0);         // continua incrementando o PC sem jump
+                            ALUop.write(op_add);    // força a soma para o deslocamento reg + imediate
+                            ALUSrc.write(1);        // vai somar com o imediate
+                            MemRead.write(0);       // não vai ler da memória de dados
+                            MemWrite.write(1);      // vai escrever na memória de dados
+                            RegWrite.write(0);      // não vai escrever no registrador
+                            break;
 
                             case op_j: PCSrc.write(1);break;
 
