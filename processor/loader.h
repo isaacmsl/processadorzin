@@ -13,16 +13,25 @@
 template<int clock_int>
 void load_instructions(mymemory<clock_int>& InstructionMemory, std::string file) {
 
+    // Operações básicas de ULA
+    // InstructionMemory.ram_array[0] = "00101100011000010001000000000001"; // write r[3] + r[1] in r[2]
+    // InstructionMemory.ram_array[1] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[2] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[3] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[4] = "00001100011000100000000000000010"; // write r[3] * 2 in r[2]
+    // InstructionMemory.ram_array[5] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[6] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[7] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[8] = "00000100010001000000000000000000"; // write r[2] + 0 in r[4]
 
-    InstructionMemory.ram_array[0] = "00101100011000010001000000000001"; // write r[3] + r[1] in r[2]
-    InstructionMemory.ram_array[1] = "00000000000000000000000000000000"; // nada
-    InstructionMemory.ram_array[2] = "00000000000000000000000000000000"; // nada
-    InstructionMemory.ram_array[3] = "00000000000000000000000000000000"; // nada
-    InstructionMemory.ram_array[4] = "00001100011000100000000000000010"; // write r[3] * 2 in r[2]
-    InstructionMemory.ram_array[5] = "00000000000000000000000000000000"; // nada
-    InstructionMemory.ram_array[6] = "00000000000000000000000000000000"; // nada
-    InstructionMemory.ram_array[7] = "00000000000000000000000000000000"; // nada
-    InstructionMemory.ram_array[8] = "00000100010001000000000000000000"; // write r[2] + 0 in r[4]
+    // LW
+    // Perceba que na memória na posição 1 tem 00000000000000000000000000011111 e r[1] = 00000000000000000000000000000001
+    // Dessa forma, o valor que será carregado para r[2] será 00000000000000000000000000011111
+    // InstructionMemory.ram_array[0] = "00110000001000100000000000000000"; // load memory at r[1] + 0 to r[2]
+    // InstructionMemory.ram_array[1] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[2] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[3] = "00000000000000000000000000000000"; // nada
+    // InstructionMemory.ram_array[4] = "00000100010001000000000000000000"; // write r[2] + 0 in r[4]
 
     // msd -> lsd
     //                                000000 00000 00000 00000 00000 000000
@@ -39,15 +48,12 @@ void load_instructions(mymemory<clock_int>& InstructionMemory, std::string file)
 
 template<int clock_int>
 void load_memory(mymemory<clock_int>& DataMemory, std::string file) {
-
-    DataMemory.ram_array[0] = "00000000000000000000000000000000";
+    DataMemory.ram_array[1] = "00000000000000000000000000011111";
 }
 
 void load_registers(myregisterbank& RegisterBank, std::string file) {
 
     RegisterBank.bank[1] = "00000000000000000000000000000001";
-    RegisterBank.bank[2] = "00000000000000000000000000000010";
-    RegisterBank.bank[3] = "00000000000000000000000000000011";
 }
 
 #endif
