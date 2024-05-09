@@ -44,7 +44,7 @@ SC_MODULE (myula) {
         alu_out.write(alu_in1_int + alu_in2_int);
         c_out.write(0);
 
-        std::cout << "ULAAA!!! SOMA: "  << alu_in1_int + alu_in2_int << "\n";
+        // std::cout << "ULAAA!!! SOMA: "  << alu_in1_int + alu_in2_int << "\n";
     }
 
     if(read_ == op_sub)//Resta
