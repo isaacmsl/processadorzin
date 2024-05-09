@@ -92,8 +92,6 @@ SC_MODULE (myula) {
     {	
         alu_out.write(~alu_in2_int);
     }
-    std::cout << "ULAAA!!! "  << alu_in1 << " " << alu_in2 << " " << alu_out << "\n";
-    
   }
     
   SC_CTOR(myula) {

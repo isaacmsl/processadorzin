@@ -28,6 +28,11 @@ SC_MODULE(mycontrol) {
                         state = S1;
                     break;
                     case S1: // processing next instruction
+
+                        if (clk.read() == 1) {
+                            break;
+                        }
+
                         int opcode_int = word_to_int(opcode.read());
                         ALUop.write(opcode_int);
                         
@@ -89,6 +94,15 @@ SC_MODULE(mycontrol) {
             else {
                 state = S0;
             }
+
+            std::cout << "S1 " << RegWrite.read() <<
+                            RegDst.read() <<
+                            ALUSrc.read() <<
+                            MemWrite.read() <<
+                            MemRead.read() <<
+                            MemToReg.read() <<
+                            PCSrc.read() << '\n';
+
             wait();
         }
 
@@ -102,6 +116,6 @@ SC_MODULE(mycontrol) {
 
     SC_CTOR(mycontrol) {
         SC_THREAD(n);
-		sensitive << clk.pos();
+		sensitive << clk;
     }
 };

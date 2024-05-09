@@ -33,7 +33,7 @@ SC_MODULE(mon) {
             cout << setw(3 + 1) << bit_out.read() << " ";
             cout << setw(3 + 1) << clk.read() << " " << endl;
 
-            cout << "\n next cicle:\n";
+            cout << "\n\n\n next cicle:\n";
             wait();
         }
     }
