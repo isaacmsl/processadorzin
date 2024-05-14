@@ -1,3 +1,6 @@
+#ifndef ADDER_H
+#define ADDER_H
+
 #include "systemc.h"
 #include "../global.h"
 
@@ -34,3 +37,5 @@ SC_MODULE(myadder) {
 		sensitive << A << B;
     }
 };
+
+#endif

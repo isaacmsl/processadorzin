@@ -6,7 +6,7 @@
 #include "register.h"
 
 SC_MODULE(myregisterbank) {
-    const static int banksize = 1 << MYADDRESSWORD_LENGTH;
+    const static int banksize = (1 << MYADDRESSWORD_LENGTH);
 
     sc_in<bool> clk, write;
     sc_in<myword> data;
@@ -15,20 +15,22 @@ SC_MODULE(myregisterbank) {
     std::array<myword, banksize> bank;
 
     void m() {
-        if (clk.read() && write.read()) {
-            bank[ my_to_int<myaddressword>(addr_write.read()) % banksize ] = data.read();
+        if (write.read() == 1) { // clk.read() == 0
 
-        } else {
+            int addr_ = my_to_int<myaddressword>(addr_write.read()) % banksize;
+
+            // std::cout << "REG WRITE !!!" << addr_ << " " << data.read() <<'\n';
+
+            bank[ addr_ ] = data.read();
+        } else if (write.read() == 0) {
             out1.write(bank[ my_to_int<myaddressword>(addr1.read()) % banksize ]);
             out2.write(bank[ my_to_int<myaddressword>(addr2.read()) % banksize ]);
         }
-
-        //std::cout << bank[1] << '\n';
     }
 
     SC_CTOR(myregisterbank): clk("CLK") {
         SC_METHOD(m);
-		sensitive << clk.pos() << addr1 << addr2 << data << addr_write << write;
+		sensitive << clk;// << addr1 << addr2 << data << addr_write << write;
     }
 };
 

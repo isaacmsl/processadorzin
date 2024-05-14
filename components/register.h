@@ -1,17 +1,24 @@
+#ifndef REGISTER_H
+#define REGISTER_H
+
 #include "systemc.h"
 #include "../global.h"
 
+template<typename dq_type>
 SC_MODULE(myregister) {
     sc_in<bool> clk, clr, ld;
-    sc_in<myword> d;
-    sc_out<myword> q;
+    sc_in<dq_type> d;
+    sc_out<dq_type> q;
 
     void m() {
+        /*
         if (clr.read()) {
             q.write(0);
-        } else if (ld.read()) {
+        } else if (l.read()) {
             q.write(d);
         }
+        */
+       q.write(d);
     }
 
     SC_CTOR(myregister): clk("CLK") {
@@ -19,3 +26,5 @@ SC_MODULE(myregister) {
 		sensitive << clk.pos();
     }
 };
+
+#endif

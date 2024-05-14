@@ -13,12 +13,13 @@ SC_MODULE(mymemory) {
     std::array<myword, memSize> ram_array;
 
     void m() {
+
         // getting addr as int
         int addr_as_int = word_to_int(addr.read())  % (memSize);
         // writting
-        if (write.read()) {
+        if (write.read() == 1) {
             ram_array[addr_as_int] = data.read();
-        } else if (read.read()) {
+        } else if (read.read() == 1) {
             // reading
             out.write(ram_array[addr_as_int]);
         }
